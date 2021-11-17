@@ -1,7 +1,7 @@
 ﻿
 namespace FleetManager
 {
-    partial class Form1
+    partial class LoginMenu
     {
         /// <summary>
         /// Wymagana zmienna projektanta.
@@ -43,7 +43,6 @@ namespace FleetManager
             this.UsernameBox.Name = "UsernameBox";
             this.UsernameBox.Size = new System.Drawing.Size(100, 20);
             this.UsernameBox.TabIndex = 0;
-            this.UsernameBox.TextChanged += new System.EventHandler(this.LoginBox_TextChanged);
             // 
             // PasswordBox
             // 
@@ -52,7 +51,6 @@ namespace FleetManager
             this.PasswordBox.Name = "PasswordBox";
             this.PasswordBox.Size = new System.Drawing.Size(100, 20);
             this.PasswordBox.TabIndex = 1;
-            this.PasswordBox.TextChanged += new System.EventHandler(this.PasswordBox_TextChanged);
             // 
             // UsernameLabel
             // 
@@ -85,7 +83,7 @@ namespace FleetManager
             this.LoginButton.UseVisualStyleBackColor = true;
             this.LoginButton.Click += new System.EventHandler(this.LoginButton_Click);
             // 
-            // Form1
+            // LoginMenu
             // 
             this.AcceptButton = this.LoginButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -97,7 +95,7 @@ namespace FleetManager
             this.Controls.Add(this.PasswordBox);
             this.Controls.Add(this.UsernameBox);
             this.MinimumSize = new System.Drawing.Size(1280, 720);
-            this.Name = "Form1";
+            this.Name = "LoginMenu";
             this.Text = "Form1";
             this.ResumeLayout(false);
             this.PerformLayout();

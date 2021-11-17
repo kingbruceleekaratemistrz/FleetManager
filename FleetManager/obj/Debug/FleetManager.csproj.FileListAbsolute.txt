@@ -8,3 +8,14 @@ C:\Users\pduln\source\repos\FleetManager\obj\Debug\FleetManager.csproj.GenerateR
 C:\Users\pduln\source\repos\FleetManager\obj\Debug\FleetManager.csproj.CoreCompileInputs.cache
 C:\Users\pduln\source\repos\FleetManager\obj\Debug\FleetManager.exe
 C:\Users\pduln\source\repos\FleetManager\obj\Debug\FleetManager.pdb
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\FleetManager.exe.config
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\FleetManager.exe
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\FleetManager.pdb
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.csproj.AssemblyReference.cache
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Properties.Resources.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.csproj.GenerateResource.cache
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.csproj.CoreCompileInputs.cache
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.exe
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.pdb
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.LoginMenu.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.UserProfileMenu.resources
