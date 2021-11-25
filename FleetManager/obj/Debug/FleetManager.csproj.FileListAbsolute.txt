@@ -19,3 +19,8 @@ C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.pdb
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.LoginMenu.resources
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.UserProfileMenu.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.MainMenu.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\Controls\UserProfileControl.resx
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\Controls\UserProfileControl.cs
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\Controls\UserProfileControl.Designer.cs
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.UserProfileControl.resources

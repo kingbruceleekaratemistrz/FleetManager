@@ -39,7 +39,7 @@ namespace FleetManager
             // UsernameBox
             // 
             this.UsernameBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.UsernameBox.Location = new System.Drawing.Point(590, 274);
+            this.UsernameBox.Location = new System.Drawing.Point(100, 104);
             this.UsernameBox.Name = "UsernameBox";
             this.UsernameBox.Size = new System.Drawing.Size(100, 20);
             this.UsernameBox.TabIndex = 0;
@@ -47,7 +47,7 @@ namespace FleetManager
             // PasswordBox
             // 
             this.PasswordBox.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.PasswordBox.Location = new System.Drawing.Point(590, 300);
+            this.PasswordBox.Location = new System.Drawing.Point(100, 130);
             this.PasswordBox.Name = "PasswordBox";
             this.PasswordBox.Size = new System.Drawing.Size(100, 20);
             this.PasswordBox.TabIndex = 1;
@@ -56,7 +56,7 @@ namespace FleetManager
             // 
             this.UsernameLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.UsernameLabel.AutoSize = true;
-            this.UsernameLabel.Location = new System.Drawing.Point(529, 277);
+            this.UsernameLabel.Location = new System.Drawing.Point(39, 107);
             this.UsernameLabel.Name = "UsernameLabel";
             this.UsernameLabel.Size = new System.Drawing.Size(55, 13);
             this.UsernameLabel.TabIndex = 2;
@@ -66,7 +66,7 @@ namespace FleetManager
             // 
             this.PasswordLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.PasswordLabel.AutoSize = true;
-            this.PasswordLabel.Location = new System.Drawing.Point(531, 303);
+            this.PasswordLabel.Location = new System.Drawing.Point(41, 133);
             this.PasswordLabel.Name = "PasswordLabel";
             this.PasswordLabel.Size = new System.Drawing.Size(53, 13);
             this.PasswordLabel.TabIndex = 3;
@@ -75,7 +75,7 @@ namespace FleetManager
             // LoginButton
             // 
             this.LoginButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.LoginButton.Location = new System.Drawing.Point(600, 326);
+            this.LoginButton.Location = new System.Drawing.Point(110, 156);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(75, 23);
             this.LoginButton.TabIndex = 4;
@@ -88,15 +88,16 @@ namespace FleetManager
             this.AcceptButton = this.LoginButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1264, 681);
+            this.ClientSize = new System.Drawing.Size(284, 341);
             this.Controls.Add(this.LoginButton);
             this.Controls.Add(this.PasswordLabel);
             this.Controls.Add(this.UsernameLabel);
             this.Controls.Add(this.PasswordBox);
             this.Controls.Add(this.UsernameBox);
-            this.MinimumSize = new System.Drawing.Size(1280, 720);
+            this.MaximumSize = new System.Drawing.Size(300, 380);
+            this.MinimumSize = new System.Drawing.Size(300, 380);
             this.Name = "LoginMenu";
-            this.Text = "Form1";
+            this.Text = "Logowanie do Fleet Manager";
             this.ResumeLayout(false);
             this.PerformLayout();
 

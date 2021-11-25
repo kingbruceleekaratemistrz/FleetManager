@@ -16,7 +16,12 @@ DROP PROCEDURE PROC_CLOSE_SESSION
 
 
 
-/* Procedura zwracaj¹ca informacje o profilu u¿ytkownika. */
+/* Procedura zwracaj¹ca informacje o profilu u¿ytkownika. 
+** @token s³u¿y do weryfikacji sesji, jeœli podany @token
+** nie znajduje siê w tabeli CONF_SESSIONS to procedura
+** nie zwróci danych. Jeœli @username jest pominiêty procedura
+** zwróci dane o profilu pasuj¹cym do @token
+*/
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -30,8 +35,13 @@ BEGIN
 END
 GO
 
-ALTER PROCEDURE dbo.PROC_GET_USER_PROFILE (@input_username nvarchar(30))
+ALTER PROCEDURE dbo.PROC_GET_USER_PROFILE (@token varbinary(64), @input_username nvarchar(30) = NULL)
 AS
+	IF @input_username IS NULL
+	BEGIN
+		SELECT @input_username = username FROM CONF_SESSIONS WHERE sessionID=@token
+	END
+
 	DECLARE @sql nvarchar(200)
 	
 	SET @input_username = LTRIM(RTRIM(@input_username))

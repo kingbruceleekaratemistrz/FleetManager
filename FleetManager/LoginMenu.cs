@@ -20,20 +20,30 @@ namespace FleetManager
             // Sprawdzenie czy podane łańcuchy nie są za długie
             if (AreCredentialsToLong())
                 return;
+           
+            // Token autoryzujący weryfikowany przy wywoływainu procedur na bazie
+            byte[] token = SqlConn.CallLoginProcedure(username, password);
 
             // Jeśli token == null to znaczy że dane werfikacyjne były niepoprawne
-            byte[] token = SqlConn.CallLoginProcedure(username, password);
             if (token == null)
                 MessageBox.Show("Podano błędny login lub hasło!");
             else
             {
-                string tokenString = BitConverter.ToString(token).Replace("-", string.Empty);
+ 
+                // string tokenString = BitConverter.ToString(token).Replace("-", string.Empty);
 
                 MessageBox.Show("Logowanie zakończone sukcesem!");
+                
+                // Usuwa wartości textboxów, aby można było wrócić do LoginMenu po wylogowaniu.
+                this.UsernameBox.Text = string.Empty;
+                this.PasswordBox.Text = string.Empty;
                 this.Hide();
 
-                UserProfileMenu profileMenu = new UserProfileMenu(username, tokenString);
-                profileMenu.Show();
+                // Tworzy MainMenu w którym wyświetlane będą kontrolki użytkownika (profile, listy itp.)
+                /*UserProfileMenu profileMenu = new UserProfileMenu(username, token, this);                
+                profileMenu.ShowDialog();*/
+                MainMenu mainMenu = new MainMenu(token, this);
+                mainMenu.Show();
             }          
         }
 

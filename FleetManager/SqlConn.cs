@@ -8,6 +8,8 @@ namespace FleetManager
     {
         private static string connectionString = "Server=(LocalDb)\\AdmBD;Database=fleet_db;Trusted_Connection=True;";
 
+        #region Procedury logowania/wylogowania
+
         public static byte[] CallLoginProcedure(string username, string password)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -30,6 +32,25 @@ namespace FleetManager
             }
         }
 
+        public static void CallLogoutProcedure(byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("PROC_CLOSE_SESSION", conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        #endregion
+
+        #region Procedury zwracające tabelę danych
+
         public static DataTable GetTableProcedure(string procName, string parName, string parValue)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
@@ -47,5 +68,25 @@ namespace FleetManager
                 }
             }
         }
+
+        public static DataTable GetTableProcedure(string procName, byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(procName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    return table;
+                }
+            }
+        }
+
+        #endregion 
     }
 }
