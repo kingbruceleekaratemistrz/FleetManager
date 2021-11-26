@@ -9,7 +9,8 @@ END
 GO
 /* Usuwanie procedur */
 /*
-DROP PROCEDURE PROC_USERS_GET_PROFILE
+DROP PROCEDURE PROC_GET_USER_PROFILE
+DROP PROCEDURE PROC_COMP_PROFILE
 DROP PROCEDURE PROC_AUTHORIZE
 DROP PROCEDURE PROC_CLOSE_SESSION
 */
@@ -48,6 +49,38 @@ AS
 
 	SET @sql = N'USE fleet_db '
 				+ N'SELECT * FROM USERS_PROFILES WHERE username = ''' + @input_username + ''''
+	EXEC sp_sqlexec @sql
+RETURN
+GO
+
+
+
+/* Procedura zwracaj¹ca informacje o profilu firmy. 
+** @token s³u¿y do weryfikacji sesji, jeœli podany @token
+** nie znajduje siê w tabeli CONF_SESSIONS to procedura
+** nie zwróci danych.
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_COMP_PROFILE')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_COMP_PROFILE AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+
+ALTER PROCEDURE dbo.PROC_GET_COMP_PROFILE (@token varbinary(64), @input_name nvarchar(60))
+AS
+	DECLARE @sql nvarchar(200)
+	
+	SET @input_name = LTRIM(RTRIM(@input_name))
+
+	SET @sql = N'USE fleet_db '
+				+ N'SELECT * FROM COMP_PROFILES WHERE [name] = ''' + @input_name + ''''
 	EXEC sp_sqlexec @sql
 RETURN
 GO
