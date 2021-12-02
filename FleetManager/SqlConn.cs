@@ -51,13 +51,14 @@ namespace FleetManager
 
         #region Procedury zwracające tabelę danych
 
-        public static DataTable GetTableProcedure(string procName, string parName, string parValue)
+        public static DataTable GetTableProcedure(string procName, string parName, string parValue, byte[] token)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand(procName, conn))
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
                     cmd.Parameters.Add("@" + parName, SqlDbType.NVarChar).Value = parValue;
 
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);

@@ -46,6 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\CompanyProfileControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CompanyProfileControl.Designer.cs">
+      <DependentUpon>CompanyProfileControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserProfileControl.cs">
       <SubType>UserControl</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -69,6 +75,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlConn.cs" />
+    <EmbeddedResource Include="Controls\CompanyProfileControl.resx">
+      <DependentUpon>CompanyProfileControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserProfileControl.resx">
       <DependentUpon>UserProfileControl.cs</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
