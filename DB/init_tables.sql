@@ -155,6 +155,10 @@ INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
 	VALUES ('XA82824', 'Mercedes-Benz', 'klasa G AMG', '2017', '571', '5461')
 INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
 	VALUES ('WU11354', 'BMW-ALPINA', 'B7', '2021', '608', '4395')
+INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
+	VALUES ('XZ27441', 'Volkswagen', 'Arteon', '2020', '190', '1984')
+INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
+	VALUES ('XZZ7441', 'Volkswagen', 'Arteon', '2018', '240', '1968')
 
 
 /* Wstawienie danych do USERS_PROFILES */

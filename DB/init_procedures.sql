@@ -15,6 +15,8 @@ DROP PROCEDURE PROC_GET_USER_PROFILE
 DROP PROCEDURE PROC_GET_SHORT_USER_PROFILE
 DROP PROCEDURE PROC_GET_COMP_PROFILE
 DROP PROCEDURE PROC_GET_CAR_PROFILE
+DROP PROCEDURE PROC_GET_USERS_LIST
+DROP PROCEDURE PROC_GET_CARS_LIST
 DROP PROCEDURE PROC_AUTHORIZE
 DROP PROCEDURE PROC_CLOSE_SESSION
 */
@@ -168,6 +170,67 @@ AS
 
 	SET @sql = N'USE fleet_db '
 				+ N'SELECT * FROM CARS WHERE plate_number = ''' + @plate + ''''
+	EXEC sp_sqlexec @sql
+GO
+
+
+
+/* Procedura zwracaj¹ca listê u¿ytkowników z firmy,
+** do której nale¿y u¿ytkownik, którego @token zosta³
+** przekazany jako parametr.
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_USERS_LIST')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_USERS_LIST AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+
+ALTER PROCEDURE dbo.PROC_GET_USERS_LIST (@token varbinary(64))
+AS
+	DECLARE @comp_name nvarchar(60)
+	SELECT @comp_name = u.company FROM USERS_PROFILES u
+	JOIN CONF_SESSIONS s ON u.username = s.username
+	WHERE s.sessionID = @token
+
+	DECLARE @sql nvarchar(200)
+
+	SET @sql = N'USE fleet_db '
+				+ N'SELECT first_name, last_name, position, username '
+				+ N'FROM USERS_PROFILES WHERE company = ''' + @comp_name + ''''
+	EXEC sp_sqlexec @sql
+GO
+
+
+
+/* Procedura zwracaj¹ca listê pojazdów z bazy danych.
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_CARS_LIST')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_CARS_LIST AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+
+ALTER PROCEDURE dbo.PROC_GET_CARS_LIST (@token varbinary(64))
+AS
+	DECLARE @sql nvarchar(200)
+
+	SET @sql = N'USE fleet_db '
+				+ N'SELECT brand, model, prod_year, hp, cc '
+				+ N'FROM CARS ORDER BY brand, model, prod_year '
 	EXEC sp_sqlexec @sql
 GO
 

@@ -31,19 +31,19 @@ namespace FleetManager
         {
             this.MainPanel = new System.Windows.Forms.Panel();
             this.SidePanel = new System.Windows.Forms.Panel();
-            this.LinkTableLayout = new System.Windows.Forms.TableLayoutPanel();
-            this.ProfilePictureBox = new System.Windows.Forms.PictureBox();
-            this.FirstNameLabel = new System.Windows.Forms.Label();
-            this.LastNameLabel = new System.Windows.Forms.Label();
             this.CompanyNameLabel = new System.Windows.Forms.Label();
-            this.ShowUserProfile = new System.Windows.Forms.Label();
-            this.ShowCompanyProfile = new System.Windows.Forms.Label();
-            this.ShowCarProfile = new System.Windows.Forms.Label();
-            this.ShowCoworkersList = new System.Windows.Forms.Label();
-            this.ShowCarList = new System.Windows.Forms.Label();
+            this.LastNameLabel = new System.Windows.Forms.Label();
+            this.FirstNameLabel = new System.Windows.Forms.Label();
+            this.ProfilePictureBox = new System.Windows.Forms.PictureBox();
+            this.LinkTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.ShowCarListLabel = new System.Windows.Forms.Label();
+            this.ShowCoworkersListLabel = new System.Windows.Forms.Label();
+            this.ShowCarProfileLabel = new System.Windows.Forms.Label();
+            this.ShowCompanyProfileLabel = new System.Windows.Forms.Label();
+            this.ShowUserProfileLabel = new System.Windows.Forms.Label();
             this.SidePanel.SuspendLayout();
-            this.LinkTableLayout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProfilePictureBox)).BeginInit();
+            this.LinkTableLayout.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainPanel
@@ -66,15 +66,50 @@ namespace FleetManager
             this.SidePanel.Size = new System.Drawing.Size(340, 680);
             this.SidePanel.TabIndex = 0;
             // 
+            // CompanyNameLabel
+            // 
+            this.CompanyNameLabel.AutoSize = true;
+            this.CompanyNameLabel.Location = new System.Drawing.Point(70, 178);
+            this.CompanyNameLabel.Name = "CompanyNameLabel";
+            this.CompanyNameLabel.Size = new System.Drawing.Size(64, 13);
+            this.CompanyNameLabel.TabIndex = 5;
+            this.CompanyNameLabel.Text = "Nazwa firmy";
+            // 
+            // LastNameLabel
+            // 
+            this.LastNameLabel.AutoSize = true;
+            this.LastNameLabel.Location = new System.Drawing.Point(70, 161);
+            this.LastNameLabel.Name = "LastNameLabel";
+            this.LastNameLabel.Size = new System.Drawing.Size(53, 13);
+            this.LastNameLabel.TabIndex = 4;
+            this.LastNameLabel.Text = "Nazwisko";
+            // 
+            // FirstNameLabel
+            // 
+            this.FirstNameLabel.AutoSize = true;
+            this.FirstNameLabel.Location = new System.Drawing.Point(70, 144);
+            this.FirstNameLabel.Name = "FirstNameLabel";
+            this.FirstNameLabel.Size = new System.Drawing.Size(26, 13);
+            this.FirstNameLabel.TabIndex = 3;
+            this.FirstNameLabel.Text = "Imię";
+            // 
+            // ProfilePictureBox
+            // 
+            this.ProfilePictureBox.Location = new System.Drawing.Point(70, 73);
+            this.ProfilePictureBox.Name = "ProfilePictureBox";
+            this.ProfilePictureBox.Size = new System.Drawing.Size(64, 64);
+            this.ProfilePictureBox.TabIndex = 2;
+            this.ProfilePictureBox.TabStop = false;
+            // 
             // LinkTableLayout
             // 
             this.LinkTableLayout.ColumnCount = 1;
             this.LinkTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.LinkTableLayout.Controls.Add(this.ShowCarList, 0, 4);
-            this.LinkTableLayout.Controls.Add(this.ShowCoworkersList, 0, 3);
-            this.LinkTableLayout.Controls.Add(this.ShowCarProfile, 0, 2);
-            this.LinkTableLayout.Controls.Add(this.ShowCompanyProfile, 0, 1);
-            this.LinkTableLayout.Controls.Add(this.ShowUserProfile, 0, 0);
+            this.LinkTableLayout.Controls.Add(this.ShowCarListLabel, 0, 4);
+            this.LinkTableLayout.Controls.Add(this.ShowCoworkersListLabel, 0, 3);
+            this.LinkTableLayout.Controls.Add(this.ShowCarProfileLabel, 0, 2);
+            this.LinkTableLayout.Controls.Add(this.ShowCompanyProfileLabel, 0, 1);
+            this.LinkTableLayout.Controls.Add(this.ShowUserProfileLabel, 0, 0);
             this.LinkTableLayout.Location = new System.Drawing.Point(70, 229);
             this.LinkTableLayout.Name = "LinkTableLayout";
             this.LinkTableLayout.RowCount = 5;
@@ -86,95 +121,60 @@ namespace FleetManager
             this.LinkTableLayout.Size = new System.Drawing.Size(200, 150);
             this.LinkTableLayout.TabIndex = 1;
             // 
-            // ProfilePictureBox
+            // ShowCarListLabel
             // 
-            this.ProfilePictureBox.Location = new System.Drawing.Point(70, 73);
-            this.ProfilePictureBox.Name = "ProfilePictureBox";
-            this.ProfilePictureBox.Size = new System.Drawing.Size(64, 64);
-            this.ProfilePictureBox.TabIndex = 2;
-            this.ProfilePictureBox.TabStop = false;
+            this.ShowCarListLabel.AutoSize = true;
+            this.ShowCarListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowCarListLabel.Location = new System.Drawing.Point(3, 120);
+            this.ShowCarListLabel.Name = "ShowCarListLabel";
+            this.ShowCarListLabel.Size = new System.Drawing.Size(114, 20);
+            this.ShowCarListLabel.TabIndex = 4;
+            this.ShowCarListLabel.Text = "Lista pojazdów";
+            this.ShowCarListLabel.Click += new System.EventHandler(this.ShowCarList_Click);
             // 
-            // FirstNameLabel
+            // ShowCoworkersListLabel
             // 
-            this.FirstNameLabel.AutoSize = true;
-            this.FirstNameLabel.Location = new System.Drawing.Point(70, 144);
-            this.FirstNameLabel.Name = "FirstNameLabel";
-            this.FirstNameLabel.Size = new System.Drawing.Size(26, 13);
-            this.FirstNameLabel.TabIndex = 3;
-            this.FirstNameLabel.Text = "Imię";
+            this.ShowCoworkersListLabel.AutoSize = true;
+            this.ShowCoworkersListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowCoworkersListLabel.Location = new System.Drawing.Point(3, 90);
+            this.ShowCoworkersListLabel.Name = "ShowCoworkersListLabel";
+            this.ShowCoworkersListLabel.Size = new System.Drawing.Size(179, 20);
+            this.ShowCoworkersListLabel.TabIndex = 3;
+            this.ShowCoworkersListLabel.Text = "Lista współpracowników";
+            this.ShowCoworkersListLabel.Click += new System.EventHandler(this.ShowCoworkersList_Click);
             // 
-            // LastNameLabel
+            // ShowCarProfileLabel
             // 
-            this.LastNameLabel.AutoSize = true;
-            this.LastNameLabel.Location = new System.Drawing.Point(70, 161);
-            this.LastNameLabel.Name = "LastNameLabel";
-            this.LastNameLabel.Size = new System.Drawing.Size(53, 13);
-            this.LastNameLabel.TabIndex = 4;
-            this.LastNameLabel.Text = "Nazwisko";
+            this.ShowCarProfileLabel.AutoSize = true;
+            this.ShowCarProfileLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowCarProfileLabel.Location = new System.Drawing.Point(3, 60);
+            this.ShowCarProfileLabel.Name = "ShowCarProfileLabel";
+            this.ShowCarProfileLabel.Size = new System.Drawing.Size(85, 20);
+            this.ShowCarProfileLabel.TabIndex = 2;
+            this.ShowCarProfileLabel.Text = "Mój pojazd";
+            this.ShowCarProfileLabel.Click += new System.EventHandler(this.ShowCarProfile_Click);
             // 
-            // CompanyNameLabel
+            // ShowCompanyProfileLabel
             // 
-            this.CompanyNameLabel.AutoSize = true;
-            this.CompanyNameLabel.Location = new System.Drawing.Point(70, 178);
-            this.CompanyNameLabel.Name = "CompanyNameLabel";
-            this.CompanyNameLabel.Size = new System.Drawing.Size(64, 13);
-            this.CompanyNameLabel.TabIndex = 5;
-            this.CompanyNameLabel.Text = "Nazwa firmy";
+            this.ShowCompanyProfileLabel.AutoSize = true;
+            this.ShowCompanyProfileLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowCompanyProfileLabel.Location = new System.Drawing.Point(3, 30);
+            this.ShowCompanyProfileLabel.Name = "ShowCompanyProfileLabel";
+            this.ShowCompanyProfileLabel.Size = new System.Drawing.Size(81, 20);
+            this.ShowCompanyProfileLabel.TabIndex = 1;
+            this.ShowCompanyProfileLabel.Text = "Profil firmy";
+            this.ShowCompanyProfileLabel.Click += new System.EventHandler(this.ShowCompanyProfile_Click);
             // 
-            // ShowUserProfile
+            // ShowUserProfileLabel
             // 
-            this.ShowUserProfile.AutoSize = true;
-            this.ShowUserProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowUserProfile.Location = new System.Drawing.Point(3, 0);
-            this.ShowUserProfile.Name = "ShowUserProfile";
-            this.ShowUserProfile.Size = new System.Drawing.Size(72, 20);
-            this.ShowUserProfile.TabIndex = 0;
-            this.ShowUserProfile.Text = "Mój profil";
-            this.ShowUserProfile.Click += new System.EventHandler(this.ShowUserProfile_Click);
-            // 
-            // ShowCompanyProfile
-            // 
-            this.ShowCompanyProfile.AutoSize = true;
-            this.ShowCompanyProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCompanyProfile.Location = new System.Drawing.Point(3, 30);
-            this.ShowCompanyProfile.Name = "ShowCompanyProfile";
-            this.ShowCompanyProfile.Size = new System.Drawing.Size(81, 20);
-            this.ShowCompanyProfile.TabIndex = 1;
-            this.ShowCompanyProfile.Text = "Profil firmy";
-            this.ShowCompanyProfile.Click += new System.EventHandler(this.ShowCompanyProfile_Click);
-            // 
-            // ShowCarProfile
-            // 
-            this.ShowCarProfile.AutoSize = true;
-            this.ShowCarProfile.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCarProfile.Location = new System.Drawing.Point(3, 60);
-            this.ShowCarProfile.Name = "ShowCarProfile";
-            this.ShowCarProfile.Size = new System.Drawing.Size(85, 20);
-            this.ShowCarProfile.TabIndex = 2;
-            this.ShowCarProfile.Text = "Mój pojazd";
-            this.ShowCarProfile.Click += new System.EventHandler(this.ShowCarProfile_Click);
-            // 
-            // ShowCoworkersList
-            // 
-            this.ShowCoworkersList.AutoSize = true;
-            this.ShowCoworkersList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCoworkersList.Location = new System.Drawing.Point(3, 90);
-            this.ShowCoworkersList.Name = "ShowCoworkersList";
-            this.ShowCoworkersList.Size = new System.Drawing.Size(179, 20);
-            this.ShowCoworkersList.TabIndex = 3;
-            this.ShowCoworkersList.Text = "Lista współpracowników";
-            this.ShowCoworkersList.Click += new System.EventHandler(this.ShowCoworkersList_Click);
-            // 
-            // ShowCarList
-            // 
-            this.ShowCarList.AutoSize = true;
-            this.ShowCarList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCarList.Location = new System.Drawing.Point(3, 120);
-            this.ShowCarList.Name = "ShowCarList";
-            this.ShowCarList.Size = new System.Drawing.Size(114, 20);
-            this.ShowCarList.TabIndex = 4;
-            this.ShowCarList.Text = "Lista pojazdów";
-            this.ShowCarList.Click += new System.EventHandler(this.ShowCarList_Click);
+            this.ShowUserProfileLabel.AutoSize = true;
+            this.ShowUserProfileLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowUserProfileLabel.Location = new System.Drawing.Point(3, 0);
+            this.ShowUserProfileLabel.Name = "ShowUserProfileLabel";
+            this.ShowUserProfileLabel.Size = new System.Drawing.Size(72, 20);
+            this.ShowUserProfileLabel.TabIndex = 0;
+            this.ShowUserProfileLabel.Text = "Mój profil";
+            this.ShowUserProfileLabel.Click += new System.EventHandler(this.ShowUserProfile_Click);
             // 
             // MainMenu
             // 
@@ -190,9 +190,9 @@ namespace FleetManager
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainMenu_FormClosing);
             this.SidePanel.ResumeLayout(false);
             this.SidePanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ProfilePictureBox)).EndInit();
             this.LinkTableLayout.ResumeLayout(false);
             this.LinkTableLayout.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.ProfilePictureBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -206,10 +206,10 @@ namespace FleetManager
         private System.Windows.Forms.Label CompanyNameLabel;
         private System.Windows.Forms.Label LastNameLabel;
         private System.Windows.Forms.Label FirstNameLabel;
-        private System.Windows.Forms.Label ShowCarList;
-        private System.Windows.Forms.Label ShowCoworkersList;
-        private System.Windows.Forms.Label ShowCarProfile;
-        private System.Windows.Forms.Label ShowCompanyProfile;
-        private System.Windows.Forms.Label ShowUserProfile;
+        private System.Windows.Forms.Label ShowCarListLabel;
+        private System.Windows.Forms.Label ShowCoworkersListLabel;
+        private System.Windows.Forms.Label ShowCarProfileLabel;
+        private System.Windows.Forms.Label ShowCompanyProfileLabel;
+        private System.Windows.Forms.Label ShowUserProfileLabel;
     }
 }

@@ -52,11 +52,23 @@
     <Compile Include="Controls\CarProfileControl.Designer.cs">
       <DependentUpon>CarProfileControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CarsListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CarsListControl.Designer.cs">
+      <DependentUpon>CarsListControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CompanyProfileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\CompanyProfileControl.Designer.cs">
       <DependentUpon>CompanyProfileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CoworkersListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CoworkersListControl.Designer.cs">
+      <DependentUpon>CoworkersListControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\UserProfileControl.cs">
       <SubType>UserControl</SubType>
@@ -84,8 +96,14 @@
     <EmbeddedResource Include="Controls\CarProfileControl.resx">
       <DependentUpon>CarProfileControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CarsListControl.resx">
+      <DependentUpon>CarsListControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CompanyProfileControl.resx">
       <DependentUpon>CompanyProfileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CoworkersListControl.resx">
+      <DependentUpon>CoworkersListControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserProfileControl.resx">
       <DependentUpon>UserProfileControl.cs</DependentUpon>
