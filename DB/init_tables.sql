@@ -11,6 +11,7 @@ GO
 /*	
 DROP TABLE CONF_SESSIONS
 DROP TABLE USERS_PROFILES
+DROP TABLE CARS
 DROP TABLE COMP_PROFILES
 DROP TABLE USERS_CRED
 */
@@ -60,6 +61,29 @@ END
 
 
 
+/* Tabela przechowuj¹ca informacje o pojazdach
+plate_number	brand	model	prod_year	hp		cc
+--------------- ------- ------- -----------	------- ---------
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'CARS')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsUserTable') = 1))
+BEGIN
+	CREATE TABLE dbo.CARS
+	(	plate_number	nvarchar(7)		NOT NULL CONSTRAINT PK_CARS PRIMARY KEY
+	,	brand			nvarchar(50)	NOT NULL
+	,	model			nvarchar(50)	NOT NULL
+	,	prod_year		nvarchar(4)		NOT NULL
+	,	hp				int				NOT NULL
+	,	cc				int				NOT NULL
+)
+END
+
+
+
 /* Tabela przechowuj¹ce informacje o profilach u¿ytkowników 
 username      first_name     last_name     company      position   photo_url	  phone   mail	   car
 ------------- -------------- ------------- ------------ ---------- ------------- ------- -------- ------------
@@ -82,7 +106,8 @@ BEGIN
 	,	photo_url	nvarchar(100)	NOT NULL
 	,	phone		nvarchar(9)		NOT NULL
 	,	mail		nvarchar(100)	NOT NULL
-	,	car			nvarchar(50)	NOT NULL
+	,	car_plate	nvarchar(7)		NOT NULL CONSTRAINT FK_USERS_PROFILES__CARS
+									FOREIGN KEY REFERENCES dbo.CARS(plate_number)
 )
 END
 
@@ -119,13 +144,26 @@ INSERT INTO dbo.COMP_PROFILES ([name], [description], [address], phone, mail)
 INSERT INTO dbo.COMP_PROFILES ([name], [description], [address], phone, mail) 
 	VALUES ('Netflix', 'Movies and TV series streaming at demand.', 'Los Gatos, CA 100 Winchester Cir USA', '800112439', 'netflix@mail.com')
 
+/* Wstawianie danych do CARS */
+INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
+	VALUES ('WA77354', 'Skoda', 'Fabia', '2017', '105', '1422')
+INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
+	VALUES ('WU12345', 'BMW', 'M3', '2015', '431', '2979')
+INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
+	VALUES ('EOP7441', 'Volkswagen', 'Passat', '2020', '190', '1984')
+INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
+	VALUES ('XA82824', 'Mercedes-Benz', 'klasa G AMG', '2017', '571', '5461')
+INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
+	VALUES ('WU11354', 'BMW-ALPINA', 'B7', '2021', '608', '4395')
+
+
 /* Wstawienie danych do USERS_PROFILES */
-INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car)
-	VALUES ('admin', 'Admini', 'Strator', 'Macrosoft', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_1.png', '123321123', 'admin@gmail.com', 'Mercedes-AMG GT 63 S' )
-INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car)
-	VALUES ('user1', 'Pan', 'Jan', 'Macrosoft', 'Janitor', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_2.png', '431352643', 'PanJan@gmail.com', 'Skoda Fabia')
-INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car)
-	VALUES ('user2', 'Frodo', 'Baggins', 'Netflix', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_3.png', '142511511', 'Shire@gmail.com', 'Daewoo Lanos')
+INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_plate)
+	VALUES ('admin', 'Admini', 'Strator', 'Macrosoft', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_1.png', '123321123', 'admin@gmail.com', 'XA82824' )
+INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_plate)
+	VALUES ('user1', 'Pan', 'Jan', 'Macrosoft', 'Janitor', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_2.png', '431352643', 'PanJan@gmail.com', 'EOP7441')
+INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_plate)
+	VALUES ('user2', 'Frodo', 'Baggins', 'Netflix', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_3.png', '142511511', 'Shire@gmail.com', 'WU11354')
 
 
 

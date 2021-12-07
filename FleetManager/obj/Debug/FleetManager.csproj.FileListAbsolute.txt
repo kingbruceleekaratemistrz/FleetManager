@@ -24,3 +24,4 @@ C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\Controls\Use
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\bin\Debug\Controls\UserProfileControl.Designer.cs
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.UserProfileControl.resources
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CompanyProfileControl.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CarProfileControl.resources

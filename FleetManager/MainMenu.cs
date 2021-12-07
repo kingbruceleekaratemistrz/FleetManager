@@ -13,6 +13,13 @@ namespace FleetManager
 {
     public partial class MainMenu : Form
     {
+        public enum MyControls
+        {
+            UserProfileControl,
+            CompanyProfileControl,
+            CarProfileControl
+        }
+
         private byte[] token;
         private LoginMenu loginMenu;
 
@@ -52,13 +59,17 @@ namespace FleetManager
             }
         }
 
+        #region Wyświetlanie kotrolek użytkownika
+
+        // Wyświetla profil zalogowaego użytkownika 
         private void ShowUserProfile_Click(object sender, EventArgs e)
         {
             this.MainPanel.Controls.Clear();
-            UserProfileControl ctrl = new UserProfileControl(token);       
+            UserProfileControl ctrl = new UserProfileControl(token, this);
             this.MainPanel.Controls.Add(ctrl);
         }
 
+        // Wyświetla profil firmy zalogowaego użytkownika
         private void ShowCompanyProfile_Click(object sender, EventArgs e)
         {
             this.MainPanel.Controls.Clear();
@@ -66,19 +77,47 @@ namespace FleetManager
             this.MainPanel.Controls.Add(ctrl);
         }
 
+        // Wyświetla profil pojazdu zalogowaego użytkownika
         private void ShowCarProfile_Click(object sender, EventArgs e)
         {
-
+            this.MainPanel.Controls.Clear();
+            CarProfileControl ctrl = new CarProfileControl(token);
+            this.MainPanel.Controls.Add(ctrl);
         }
 
+        // Wyświetla listę pracowników z firmy zalogowaego użytkownika
         private void ShowCoworkersList_Click(object sender, EventArgs e)
         {
 
         }
 
+        // Wyświetla listę pojazdów
         private void ShowCarList_Click(object sender, EventArgs e)
         {
 
         }
+
+        /// <summary>
+        /// Zmienia obecnie wyświetlaną kotrolkę użytkownika w oparciu o parametr mc
+        /// </summary>
+        /// <param name="mc">Typ wyliczeniowy, odpowiadający kontrolką użytkownika w programie.</param>
+        public void ChangeControl(MyControls mc)
+        {
+            switch(mc)
+            {
+                case (MyControls)0:
+                    ShowCarProfile_Click(null, null);
+                    break;
+                case (MyControls)1:
+                    ShowCompanyProfile_Click(null, null);
+                    break;
+                case (MyControls)2:
+                    ShowCarProfile_Click(null, null);
+                    break;
+            }
+        }
+
+        #endregion
+
     }
 }

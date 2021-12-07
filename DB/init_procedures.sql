@@ -14,6 +14,7 @@ GO
 DROP PROCEDURE PROC_GET_USER_PROFILE
 DROP PROCEDURE PROC_GET_SHORT_USER_PROFILE
 DROP PROCEDURE PROC_GET_COMP_PROFILE
+DROP PROCEDURE PROC_GET_CAR_PROFILE
 DROP PROCEDURE PROC_AUTHORIZE
 DROP PROCEDURE PROC_CLOSE_SESSION
 */
@@ -46,12 +47,16 @@ AS
 		SELECT @input_username = username FROM CONF_SESSIONS WHERE sessionID=@token
 	END
 
-	DECLARE @sql nvarchar(200)
+	DECLARE @sql nvarchar(500)
 	
 	SET @input_username = LTRIM(RTRIM(@input_username))
 
 	SET @sql = N'USE fleet_db '
-				+ N'SELECT * FROM USERS_PROFILES WHERE username = ''' + @input_username + ''''
+				+ N'SELECT u.username, u.first_name, u.last_name, u.company, u.position, u.photo_url, u.phone, u.mail, c.brand, c.model '
+				+ N'FROM USERS_PROFILES u '
+				+ N'JOIN CARS c ON u.car_plate=c.plate_number '
+				+ N'WHERE username = ''' + @input_username + ''''
+
 	EXEC sp_sqlexec @sql
 RETURN
 GO
@@ -126,6 +131,44 @@ AS
 				+ N'SELECT * FROM COMP_PROFILES WHERE [name] = ''' + @input_name + ''''
 	EXEC sp_sqlexec @sql
 RETURN
+GO
+
+
+
+/* Procedura zwracaj¹ca informacje o profilu pojazdu.
+** @token s³u¿y do weryfikacji sesji, jeœli podany @token
+** nie znajduje siê w tabeli CONF_SESSIONS to procedura
+** nie zwróci danych. Jeœli @username jest pominiêty procedura
+** zwróci dane o profilu pasuj¹cym do @token
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_CAR_PROFILE')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_CAR_PROFILE AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+
+ALTER PROCEDURE dbo.PROC_GET_CAR_PROFILE (@token varbinary(64), @input_username nvarchar(30) = NULL)
+AS
+	IF @input_username IS NULL
+	BEGIN
+		SELECT @input_username = username FROM CONF_SESSIONS WHERE sessionID=@token
+	END
+
+	DECLARE @plate nvarchar(7)
+	SELECT @plate = car_plate FROM USERS_PROFILES WHERE username=@input_username
+
+	DECLARE @sql nvarchar(200)
+
+	SET @sql = N'USE fleet_db '
+				+ N'SELECT * FROM CARS WHERE plate_number = ''' + @plate + ''''
+	EXEC sp_sqlexec @sql
 GO
 
 

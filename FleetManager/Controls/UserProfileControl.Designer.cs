@@ -50,6 +50,7 @@ namespace FleetManager.Controls
             this.CarLabel.Size = new System.Drawing.Size(36, 24);
             this.CarLabel.TabIndex = 19;
             this.CarLabel.Text = "car";
+            this.CarLabel.Click += new System.EventHandler(this.CarLabel_Click);
             // 
             // MailLabel
             // 

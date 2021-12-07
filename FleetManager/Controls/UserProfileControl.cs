@@ -12,35 +12,33 @@ namespace FleetManager.Controls
 {
     public partial class UserProfileControl : UserControl
     {
+        MainMenu mainMenu;
         
         public UserProfileControl()
         {
             InitializeComponent();
         }
 
-        public UserProfileControl(byte[] token)
+        public UserProfileControl(byte[] token, MainMenu mainMenu)
         {
             InitializeComponent();
+            this.mainMenu = mainMenu;
 
             DataTable profileTable = SqlConn.GetTableProcedure("PROC_GET_USER_PROFILE", token);
 
-            string firstName = profileTable.Rows[0]["first_name"].ToString();
-            string lastName = profileTable.Rows[0]["last_name"].ToString();
-            string company = profileTable.Rows[0]["company"].ToString();
-            string position = profileTable.Rows[0]["position"].ToString();
-            string phone = profileTable.Rows[0]["phone"].ToString();
-            string mail = profileTable.Rows[0]["mail"].ToString();
-            string car = profileTable.Rows[0]["car"].ToString();
-            string picUrl = profileTable.Rows[0]["photo_url"].ToString();
+            this.FirstnameLabel.Text = profileTable.Rows[0]["first_name"].ToString();
+            this.LastnameLabel.Text = profileTable.Rows[0]["last_name"].ToString();
+            this.CompanyLabel.Text = profileTable.Rows[0]["company"].ToString();
+            this.PositionLabel.Text = profileTable.Rows[0]["position"].ToString();
+            this.PhoneLabel.Text = profileTable.Rows[0]["phone"].ToString();
+            this.MailLabel.Text = profileTable.Rows[0]["mail"].ToString();
+            this.CarLabel.Text = profileTable.Rows[0]["brand"].ToString() + ' ' + profileTable.Rows[0]["model"].ToString();
+            this.ProfilePictureBox.Image = Image.FromFile(profileTable.Rows[0]["photo_url"].ToString());
+        }
 
-            this.FirstnameLabel.Text = firstName;
-            this.LastnameLabel.Text = lastName;
-            this.CompanyLabel.Text = company;
-            this.PositionLabel.Text = position;
-            this.PhoneLabel.Text = phone;
-            this.MailLabel.Text = mail;
-            this.CarLabel.Text = car;
-            this.ProfilePictureBox.Image = Image.FromFile(picUrl);
+        private void CarLabel_Click(object sender, EventArgs e)
+        {
+            this.mainMenu.ChangeControl(MainMenu.MyControls.CarProfileControl);
         }
     }
 }

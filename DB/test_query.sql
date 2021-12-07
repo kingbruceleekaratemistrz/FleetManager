@@ -31,6 +31,7 @@ SELECT * FROM COMP_PROFILES
 SELECT * FROM CONF_SESSIONS
 SELECT * FROM USERS_CRED
 SELECT * FROM USERS_PROFILES
+SELECT * FROM CARS
 
 SELECT *
 FROM USERS_PROFILES
@@ -89,3 +90,19 @@ SET @token = 0xC2634AC0CB22BC728FF4DC7ADE42FCD85BDF15D92696F027FE134EB52B1596235
 SELECT company FROM USERS_PROFILES u
 JOIN CONF_SESSIONS s ON u.username=s.username
 WHERE s.sessionID=@token
+
+
+
+SELECT u.username, u.first_name, u.last_name, u.company, u.position, u.photo_url, u.phone, u.mail, c.brand, c.model 
+FROM USERS_PROFILES u 
+JOIN CARS c ON u.car_plate=c.plate_number
+WHERE username='admin'
+
+
+
+USE fleet_db
+GO
+SELECT username, first_name, last_name, company, position, photo_url, phone, mail 
+FROM USERS_PROFILES WHERE username='admin'
+ 
+EXEC PROC_GET_USER_PROFILE @token=0x5051211491916AB65C1BCB9A85B749086B2DFC2563278D672C2359ADDF9E89752F0CA44E0E282BB68CDFC92B31E72BD451B12F476463133F418E322AC176C8F9, @input_username='admin'
