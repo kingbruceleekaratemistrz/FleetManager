@@ -16,4 +16,13 @@ namespace FleetManager
             Application.Run(new LoginMenu());
         }
     }
+
+    static class GenerateDatabase
+    {
+        static void Main()
+        {
+            Generator generator = new Generator();
+            generator.InitializeDb();
+        }
+    }
 }

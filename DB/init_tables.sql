@@ -9,6 +9,8 @@ END
 GO
 /* Usuwanie tabel */
 /*	
+USE fleet_db
+GO
 DROP TABLE CONF_SESSIONS
 DROP TABLE USERS_PROFILES
 DROP TABLE CARS
@@ -132,7 +134,7 @@ BEGIN
 END
 
 
-
+/*
 /* Wstawienie danych do USERS_CRED */
 INSERT INTO dbo.USERS_CRED (username, passwd) VALUES ('admin', 'admin')
 INSERT INTO dbo.USERS_CRED (username, passwd) VALUES ('user1', 'passwd123')
@@ -168,7 +170,7 @@ INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, positi
 	VALUES ('user1', 'Pan', 'Jan', 'Macrosoft', 'Janitor', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_2.png', '431352643', 'PanJan@gmail.com', 'EOP7441')
 INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_plate)
 	VALUES ('user2', 'Frodo', 'Baggins', 'Netflix', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_3.png', '142511511', 'Shire@gmail.com', 'WU11354')
-
+*/
 
 
 

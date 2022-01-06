@@ -1,0 +1,25 @@
+Skoda Fabia 2021 80 999
+Skoda Fabia 2021 120 1498
+Skoda Octavia 2021 150 1498
+Skoda Octavia Combi 2021 150 1498
+Kia Ceed 2021 100 999
+Kia Ceed 2021 160 1500
+Kia Ceed 2021 141 1600
+Kia Sportage 2021 132 1600
+Kia Sportage Black Edition 2021 177 1700
+Kia Stinger 2021 366 3300
+Volkswagen Golf 2021 110 999
+Volskwagen Golf R 2021 320 1984
+Volkswagen Passat 2021 150 1498
+Volkswagen Passat 2021 190 1984
+Volkswagen Arteon 2021 280 1984
+Mercedes-Benz A 200 Business Edition 2021 163 1332
+Mercedes-Benz C 200 2021 224 1496
+Mercedes-Benz C 300 Coupe 2021 272 1991
+Mercedes-Benz E 300 d 4MATIC 2021 285 1993
+Mercedes-Benz E 350 Coupe 2021 313 1991
+Mercedes-Benz S 500 4MATIC 2021 457 2999
+Mercedes-AMG GT 45 4MATIC+ 2021 457 2999
+Mercedes-AMG GLE 63 S 4MATIC+ 2021 634 3982
+Mercedes-Maybach S 680 4MATIC 2021 612 5980
+Mercedes-Maybach GLS 600 4MATIC 2021 579 3982
