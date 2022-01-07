@@ -11,6 +11,9 @@ GO
 /*	
 USE fleet_db
 GO
+DROP TABLE REPAIR_HISTORY
+DROP TABLE CAR_SERVICES
+DROP TABLE [SERVICES]
 DROP TABLE CONF_SESSIONS
 DROP TABLE USERS_PROFILES
 DROP TABLE CARS
@@ -22,8 +25,8 @@ DROP TABLE USERS_CRED
 
 
 /* Tabela przechowuj¹ca dane uwierzytelniaj¹ce 
-username                       passwd
------------------------------- ------------------------------
+username                       passwd						  acc
+------------------------------ ------------------------------ ------
 */
 USE fleet_db
 GO
@@ -35,6 +38,7 @@ BEGIN
 	CREATE TABLE dbo.USERS_CRED
 	(	username	nvarchar(30)	NOT NULL CONSTRAINT PK_USERS_CRED PRIMARY KEY
 	,	passwd		nvarchar(30)	NOT NULL
+	,	acc			int				NOT NULL
 	)
 END
 GO
@@ -64,8 +68,8 @@ END
 
 
 /* Tabela przechowuj¹ca informacje o pojazdach
-plate_number	brand	model	prod_year	hp		cc
---------------- ------- ------- -----------	------- ---------
+car_id	brand	model	prod_year	hp		cc		  photo_url
+-------	------- ------- -----------	------- --------- -----------
 */
 USE fleet_db
 GO
@@ -75,20 +79,21 @@ IF NOT EXISTS (SELECT 1
 				AND		(OBJECTPROPERTY(o.[ID], N'IsUserTable') = 1))
 BEGIN
 	CREATE TABLE dbo.CARS
-	(	plate_number	nvarchar(7)		NOT NULL CONSTRAINT PK_CARS PRIMARY KEY
+	(	car_id			int				IDENTITY CONSTRAINT PK_CARS PRIMARY KEY
 	,	brand			nvarchar(50)	NOT NULL
 	,	model			nvarchar(50)	NOT NULL
 	,	prod_year		nvarchar(4)		NOT NULL
 	,	hp				int				NOT NULL
 	,	cc				int				NOT NULL
+	,	photo_url		nvarchar(100)	NOT NULL
 )
 END
 
 
 
 /* Tabela przechowuj¹ce informacje o profilach u¿ytkowników 
-username      first_name     last_name     company      position   photo_url	  phone   mail	   car
-------------- -------------- ------------- ------------ ---------- ------------- ------- -------- ------------
+username      first_name     last_name     company      position   photo_url	  phone   mail	   car_id		plate_number
+------------- -------------- ------------- ------------ ---------- ------------- ------- -------- ------------  --------------
 */
 USE fleet_db
 GO
@@ -108,8 +113,9 @@ BEGIN
 	,	photo_url	nvarchar(100)	NOT NULL
 	,	phone		nvarchar(9)		NOT NULL
 	,	mail		nvarchar(100)	NOT NULL
-	,	car_plate	nvarchar(7)		NOT NULL CONSTRAINT FK_USERS_PROFILES__CARS
-									FOREIGN KEY REFERENCES dbo.CARS(plate_number)
+	,	car_id		int				NOT NULL CONSTRAINT FK_USERS_PROFILES__CARS
+									FOREIGN KEY REFERENCES dbo.CARS(car_id)
+	,	car_plate	nvarchar(7)		NOT NULL CONSTRAINT PK_USERS_PROFILES PRIMARY KEY
 )
 END
 
@@ -132,6 +138,75 @@ BEGIN
 	,	sessionID	varbinary(64)	NOT NULL
 )
 END
+
+
+
+/* Tabela przechowuj¹ca
+service_id  cost      time  description
+----------- --------- ----- ------------
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'SERVICES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsUserTable') = 1))
+BEGIN
+	CREATE TABLE dbo.[SERVICES]
+	(	service_id		int		IDENTITY CONSTRAINT PK_SERVICES PRIMARY KEY
+	,	cost			int		NOT NULL
+	,	[time]			nvarchar(10)	NOT NULL
+	,	[description]	nvarchar(300)	NOT NULL
+)
+END
+
+
+
+/* Tabela przechowuj¹ca
+car_service_id  address   phone		mail
+--------------- --------- --------- ------------
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'CAR_SERVICES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsUserTable') = 1))
+BEGIN
+	CREATE TABLE dbo.CAR_SERVICES
+	(	car_service_id		int				IDENTITY CONSTRAINT PK_CAR_SERVICES PRIMARY KEY
+	,	name				nvarchar(50)	NOT NULL
+	,	[address]			nvarchar(100)	NOT NULL
+	,	phone				nvarchar(9)		NOT NULL
+	,	mail				nvarchar(100)	NOT NULL
+)
+END
+
+
+
+/* Tabela przechowuj¹ca
+id			car_id    service_id   car_service_id    date  
+----------- --------- ------------ ----------------- -------
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'REPAIR_HISTORY')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsUserTable') = 1))
+BEGIN
+	CREATE TABLE dbo.REPAIR_HISTORY
+	(	id				int				IDENTITY
+	,	plate_number	nvarchar(7)		NOT NULL CONSTRAINT FK_REPAIR_HISTORY__USER_PROFILES
+										FOREIGN KEY REFERENCES dbo.USERS_PROFILES(car_plate)
+	,	service_id		int				NOT NULL CONSTRAINT FK_REPAIR_HISTORY__SERVICES
+										FOREIGN KEY REFERENCES dbo.[SERVICES](service_id)
+	,	car_service_id	int				NOT NULL CONSTRAINT FK_REPAIR_HISTORY__CAR_SERVICES
+										FOREIGN KEY REFERENCES dbo.CAR_SERVICES(car_service_id)
+	,	[date]			datetime		NOT NULL
+)
+END
+
 
 
 /*
