@@ -35,7 +35,6 @@ namespace FleetManager.Controls
             for (int i = 0; i < carServices.Rows.Count; i++)
             {
                 int id = (int)carServices.Rows[i]["car_service_id"];
-                Console.WriteLine("panel " + i +": " + id);
 
                 Panel panel = new Panel();
                 panel.Width = flowLayoutPanel1.Width - 25;

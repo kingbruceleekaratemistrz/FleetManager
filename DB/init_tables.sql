@@ -203,7 +203,7 @@ BEGIN
 										FOREIGN KEY REFERENCES dbo.[SERVICES](service_id)
 	,	car_service_id	int				NOT NULL CONSTRAINT FK_REPAIR_HISTORY__CAR_SERVICES
 										FOREIGN KEY REFERENCES dbo.CAR_SERVICES(car_service_id)
-	,	[date]			datetime		NOT NULL
+	,	[date]			datetime		
 )
 END
 

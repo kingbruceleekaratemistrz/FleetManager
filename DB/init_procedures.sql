@@ -294,6 +294,68 @@ GO
 
 
 
+/* Procedura zwracaj¹ca listê us³ug warsztatowych.
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_SERVICES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_SERVICES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+
+ALTER PROCEDURE dbo.PROC_GET_SERVICES (@token varbinary(64))
+AS
+	DECLARE @sql nvarchar(200)
+	--SELECT * FROM [SERVICES] ORDER BY service_id
+	SET @sql = N'USE fleet_db '
+				+ N'SELECT * '
+				+ N'FROM [SERVICES] ORDER BY service_id '
+	EXEC sp_sqlexec @sql
+GO
+
+
+/* Procedura wstawiaj¹ca rekord do tabeli REPAIR_HISTORY.
+*/
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_INSERT_REPAIR_HISTORY')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_INSERT_REPAIR_HISTORY AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+
+ALTER PROCEDURE dbo.PROC_INSERT_REPAIR_HISTORY (@token varbinary(64), @service_id int, @car_service_id int, @date nvarchar(19))
+AS
+	DECLARE @sql nvarchar(200)
+	DECLARE @plate nvarchar(7)
+
+	SELECT @plate = u.car_plate FROM USERS_PROFILES u
+	JOIN CONF_SESSIONS c ON u.username = c.username
+	WHERE c.sessionID = @token
+
+	SET @sql = N'USE fleet_db'
+			+ N' INSERT INTO REPAIR_HISTORY (plate_number, service_id, car_service_id, [date])'
+			+ N' VALUES (''' + @plate + ''''
+			+ N', ''' + STR(@service_id) + ''''
+			+ N', ''' + STR(@car_service_id) + ''''
+			+ N', ''' + @date + ''')'
+			
+	EXEC sp_sqlexec @sql
+GO
+
+
+
 /* Procedura weryfikuj¹ca podane dane uwierzytelniaj¹ce.
 ** Jeœli dane s¹ poprawne funkcja generuje losowy token, 
 ** przypisuje token do u¿ytkownika w tablicy CONF_SESSIONS

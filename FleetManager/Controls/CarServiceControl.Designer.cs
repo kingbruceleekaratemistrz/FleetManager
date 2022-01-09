@@ -33,6 +33,7 @@ namespace FleetManager.Controls
             this.PhoneLabel = new System.Windows.Forms.Label();
             this.AddressLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
+            this.RegisterVisitButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MailLabel
@@ -75,11 +76,22 @@ namespace FleetManager.Controls
             this.NameLabel.TabIndex = 5;
             this.NameLabel.Text = "name";
             // 
+            // RegisterVisitButton
+            // 
+            this.RegisterVisitButton.Location = new System.Drawing.Point(136, 283);
+            this.RegisterVisitButton.Name = "RegisterVisitButton";
+            this.RegisterVisitButton.Size = new System.Drawing.Size(75, 23);
+            this.RegisterVisitButton.TabIndex = 10;
+            this.RegisterVisitButton.Text = "button1";
+            this.RegisterVisitButton.UseVisualStyleBackColor = true;
+            this.RegisterVisitButton.Click += new System.EventHandler(this.RegisterVisitButton_Click);
+            // 
             // CarServiceControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.Controls.Add(this.RegisterVisitButton);
             this.Controls.Add(this.MailLabel);
             this.Controls.Add(this.PhoneLabel);
             this.Controls.Add(this.AddressLabel);
@@ -99,5 +111,6 @@ namespace FleetManager.Controls
         private System.Windows.Forms.Label PhoneLabel;
         private System.Windows.Forms.Label AddressLabel;
         private System.Windows.Forms.Label NameLabel;
+        private System.Windows.Forms.Button RegisterVisitButton;
     }
 }

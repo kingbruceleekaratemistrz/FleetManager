@@ -107,6 +107,81 @@ namespace FleetManager
             }
         }
 
-        #endregion 
+        #endregion
+
+        #region Procedury dodające rekordy do bazy
+
+        public static void InsertIntoTableProcedure(string procName, string[] parName, string[] parValue, byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(procName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+                    for (int i = 0; i < parName.Length; i++)
+                        cmd.Parameters.Add("@" + parName[i], SqlDbType.NVarChar).Value = parValue[i];
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void InsertIntoTableProcedure(string procName, string[] parName, int[] parValue, byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(procName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+                    for (int i = 0; i < parName.Length; i++)
+                        cmd.Parameters.Add("@" + parName[i], SqlDbType.Int).Value = parValue[i];
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void InsertIntoTableProcedure(string procName, string[] parName, int[] parValue, DateTime dateTime, byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(procName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+                    cmd.Parameters.Add("@date", SqlDbType.DateTime).Value = dateTime;
+                    for (int i = 0; i < parName.Length; i++)
+                        cmd.Parameters.Add("@" + parName[i], SqlDbType.Int).Value = parValue[i];
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public static void InsertIntoTableProcedure(string procName, string[] parNameStr, string[] parValueStr, string[] parNameInt, int[] parValueInt, byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(procName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+                    for (int i = 0; i < parNameStr.Length; i++)
+                        cmd.Parameters.Add("@" + parNameStr[i], SqlDbType.NVarChar).Value = parValueStr[i];
+                    for (int i = 0; i < parNameInt.Length; i++)
+                        cmd.Parameters.Add("@" + parNameInt[i], SqlDbType.Int).Value = parValueInt[i];
+
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        #endregion
     }
 }

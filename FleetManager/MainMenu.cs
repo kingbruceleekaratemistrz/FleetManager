@@ -126,7 +126,7 @@ namespace FleetManager
 
         public void ShowCarServiceProfile(int id)
         {
-            CarServiceControl ctrl = new CarServiceControl(token, id);
+            CarServiceControl ctrl = new CarServiceControl(token, this, id);
             this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
