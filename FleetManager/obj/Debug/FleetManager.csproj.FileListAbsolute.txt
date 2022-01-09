@@ -27,3 +27,5 @@ C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CarProfileControl.resources
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CoworkersListControl.resources
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CarsListControl.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CarServicesListControl.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CarServiceControl.resources

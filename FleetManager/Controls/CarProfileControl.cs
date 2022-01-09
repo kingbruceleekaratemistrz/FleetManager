@@ -25,7 +25,7 @@ namespace FleetManager.Controls
 
             this.BrandLabel.Text = carTable.Rows[0]["brand"].ToString();
             this.ModelLabel.Text = carTable.Rows[0]["model"].ToString();
-            this.PlateNumberLabel.Text = carTable.Rows[0]["plate_number"].ToString();
+            this.PlateNumberLabel.Text = carTable.Rows[0]["car_plate"].ToString();
             this.ProductionYearLabel.Text = carTable.Rows[0]["prod_year"].ToString() + " rok";
             this.HPLabel.Text = "Moc " + carTable.Rows[0]["hp"].ToString() + " KM";
             this.CCLabel.Text = "Pojemność " + carTable.Rows[0]["cc"].ToString() + " cm\xB3";

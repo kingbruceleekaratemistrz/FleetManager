@@ -33,7 +33,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>FleetManager.GenerateDatabase</StartupObject>
+    <StartupObject>FleetManager.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -54,6 +54,18 @@
     </Compile>
     <Compile Include="Controls\CarProfileControl.Designer.cs">
       <DependentUpon>CarProfileControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CarServiceControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CarServiceControl.Designer.cs">
+      <DependentUpon>CarServiceControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\CarServicesListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CarServicesListControl.Designer.cs">
+      <DependentUpon>CarServicesListControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\CarsListControl.cs">
       <SubType>UserControl</SubType>
@@ -99,6 +111,12 @@
     <Compile Include="SqlConn.cs" />
     <EmbeddedResource Include="Controls\CarProfileControl.resx">
       <DependentUpon>CarProfileControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CarServiceControl.resx">
+      <DependentUpon>CarServiceControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CarServicesListControl.resx">
+      <DependentUpon>CarServicesListControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\CarsListControl.resx">
       <DependentUpon>CarsListControl.cs</DependentUpon>

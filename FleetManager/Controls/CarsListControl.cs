@@ -33,6 +33,8 @@ namespace FleetManager.Controls
                 Panel panel = new Panel();
                 panel.Width = flowLayoutPanel1.Width;
                 panel.Height = 100;
+                panel.Tag = (int)cars.Rows[i]["car_id"];
+                panel.Click += new EventHandler(panel_Click);
 
                 Label carName = new Label();
                 carName.Text = cars.Rows[i]["brand"].ToString() + ' ' + cars.Rows[i]["model"].ToString();
@@ -51,6 +53,12 @@ namespace FleetManager.Controls
                 panel.Controls.Add(carInfo);
                 flowLayoutPanel1.Controls.Add(panel);
             }
+        }
+
+        private void panel_Click(object sender, EventArgs e)
+        {
+            Panel tmpPanel = (Panel) sender;
+            MessageBox.Show("car id: " + tmpPanel.Tag);
         }
     }
 }

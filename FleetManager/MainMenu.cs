@@ -75,47 +75,61 @@ namespace FleetManager
         // Wyświetla listę pracowników z firmy zalogowaego użytkownika
         private void ShowCoworkersList_Click(object sender, EventArgs e)
         {
-            this.MainPanel.Controls.Clear();
             CoworkersListControl ctrl = new CoworkersListControl(token, this);
+            this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
 
         // Wyświetla listę pojazdów
+
+        private void ShowCarServicesList(object sender, EventArgs e)
+        {
+            CarServicesListControl ctrl = new CarServicesListControl(token, this);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(ctrl);
+        }
+
         private void ShowCarList_Click(object sender, EventArgs e)
         {
-            this.MainPanel.Controls.Clear();
             CarsListControl ctrl = new CarsListControl(token);
+            this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
         
         public void ShowUserProfile()
         {
-            this.MainPanel.Controls.Clear();
             UserProfileControl ctrl = new UserProfileControl(token, this);
+            this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
 
         public void ShowUserProfile(string username)
         {
-            this.MainPanel.Controls.Clear();
             UserProfileControl ctrl = new UserProfileControl(token, this, username);
+            this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
 
         public void ShowCompanyProfile()
         {
-            this.MainPanel.Controls.Clear();
             CompanyProfileControl ctrl = new CompanyProfileControl(token);
+            this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
 
         public void ShowCarProfile()
         {
-            this.MainPanel.Controls.Clear();
             CarProfileControl ctrl = new CarProfileControl(token);
+            this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
 
+        public void ShowCarServiceProfile(int id)
+        {
+            CarServiceControl ctrl = new CarServiceControl(token, id);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(ctrl);
+        }
 
         #endregion
 
