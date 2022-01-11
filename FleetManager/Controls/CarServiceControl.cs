@@ -15,6 +15,7 @@ namespace FleetManager.Controls
         byte[] token;
         string carServiceName;
         int id;
+        MainMenu mainMenu;
 
         public CarServiceControl()
         {
@@ -26,21 +27,26 @@ namespace FleetManager.Controls
             InitializeComponent();
             this.token = token;
             this.id = id;
+            this.mainMenu = mainMenu;
 
             DataTable carServiceTable = SqlConn.GetTableProcedure("PROC_GET_CAR_SERVICE", "input_id", id, token);
+            if (carServiceTable == null)
+                mainMenu.ExitProgram();
+            else
+            {
+                this.NameLabel.Text = carServiceName = carServiceTable.Rows[0]["name"].ToString();
+                this.AddressLabel.Text = carServiceTable.Rows[0]["address"].ToString();
+                this.PhoneLabel.Text = carServiceTable.Rows[0]["phone"].ToString();
+                this.MailLabel.Text = carServiceTable.Rows[0]["mail"].ToString();
 
-            this.NameLabel.Text = carServiceName = carServiceTable.Rows[0]["name"].ToString();
-            this.AddressLabel.Text = carServiceTable.Rows[0]["address"].ToString();
-            this.PhoneLabel.Text = carServiceTable.Rows[0]["phone"].ToString();
-            this.MailLabel.Text = carServiceTable.Rows[0]["mail"].ToString();
-
-            this.RegisterVisitButton.Text = "Zarezerwuj termin wizyty.";
-            this.RegisterVisitButton.Visible = true;
+                this.RegisterVisitButton.Text = "Zarezerwuj termin wizyty.";
+                this.RegisterVisitButton.Visible = true;
+            }
         }
 
         private void RegisterVisitButton_Click(object sender, EventArgs e)
         {
-            RegisterVisitMenu registerVisitMenu = new RegisterVisitMenu(token, carServiceName, id);
+            RegisterVisitMenu registerVisitMenu = new RegisterVisitMenu(token, carServiceName, id, mainMenu);
             registerVisitMenu.ShowDialog();
         }
     }

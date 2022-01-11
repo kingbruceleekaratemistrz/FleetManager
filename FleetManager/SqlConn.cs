@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Windows.Forms;
+using System.Drawing;
 
 namespace FleetManager
 {
@@ -40,7 +42,6 @@ namespace FleetManager
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
-
                     conn.Open();
                     cmd.ExecuteNonQuery();
                 }
@@ -65,6 +66,12 @@ namespace FleetManager
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
+                    if (table.Columns.Count == 1 && (int)table.Rows[0][0] == -1)
+                    {
+                        MessageBox.Show("Nie udało się pobrać danych.\nBłędny token sesji.\nNastąpi zakończenie działania programu.");
+                        return null;
+                    }
+
                     return table;
                 }
             }
@@ -84,6 +91,12 @@ namespace FleetManager
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
+                    if (table.Columns.Count == 1 && (int)table.Rows[0][0] == -1)
+                    {
+                        MessageBox.Show("Nie udało się pobrać danych.\nBłędny token sesji.\nNastąpi zakończenie działania programu.");
+                        return null;
+                    }
+
                     return table;
                 }
             }
@@ -102,6 +115,12 @@ namespace FleetManager
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
+                    if (table.Columns.Count == 1 && (int)table.Rows[0][0] == -1)
+                    {
+                        MessageBox.Show("Nie udało się pobrać danych.\nBłędny token sesji.\nNastąpi zakończenie działania programu.");
+                        return null;
+                    }
+
                     return table;
                 }
             }
@@ -111,7 +130,7 @@ namespace FleetManager
 
         #region Procedury dodające rekordy do bazy
 
-        public static void InsertIntoTableProcedure(string procName, string[] parName, string[] parValue, byte[] token)
+        public static bool InsertIntoTableProcedure(string procName, string[] parName, string[] parValue, byte[] token)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -122,13 +141,19 @@ namespace FleetManager
                     for (int i = 0; i < parName.Length; i++)
                         cmd.Parameters.Add("@" + parName[i], SqlDbType.NVarChar).Value = parValue[i];
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if ((int)table.Rows[0][0] == 0)
+                        return true;
+                    else
+                        return false;
                 }
             }
         }
 
-        public static void InsertIntoTableProcedure(string procName, string[] parName, int[] parValue, byte[] token)
+        public static bool InsertIntoTableProcedure(string procName, string[] parName, int[] parValue, byte[] token)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -139,13 +164,19 @@ namespace FleetManager
                     for (int i = 0; i < parName.Length; i++)
                         cmd.Parameters.Add("@" + parName[i], SqlDbType.Int).Value = parValue[i];
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if ((int)table.Rows[0][0] == 0)
+                        return true;
+                    else
+                        return false;
                 }
             }
         }
 
-        public static void InsertIntoTableProcedure(string procName, string[] parName, int[] parValue, DateTime dateTime, byte[] token)
+        public static bool InsertIntoTableProcedure(string procName, string[] parName, int[] parValue, DateTime dateTime, byte[] token)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -157,13 +188,19 @@ namespace FleetManager
                     for (int i = 0; i < parName.Length; i++)
                         cmd.Parameters.Add("@" + parName[i], SqlDbType.Int).Value = parValue[i];
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if ((int)table.Rows[0][0] == 0)
+                        return true;
+                    else
+                        return false;
                 }
             }
         }
 
-        public static void InsertIntoTableProcedure(string procName, string[] parNameStr, string[] parValueStr, string[] parNameInt, int[] parValueInt, byte[] token)
+        public static bool InsertIntoTableProcedure(string procName, string[] parNameStr, string[] parValueStr, string[] parNameInt, int[] parValueInt, byte[] token)
         {
             using (SqlConnection conn = new SqlConnection(connectionString))
             {
@@ -171,13 +208,19 @@ namespace FleetManager
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
-                    for (int i = 0; i < parNameStr.Length; i++)
+                    for (int i = 0; i < parNameStr.Length; i++) 
                         cmd.Parameters.Add("@" + parNameStr[i], SqlDbType.NVarChar).Value = parValueStr[i];
                     for (int i = 0; i < parNameInt.Length; i++)
                         cmd.Parameters.Add("@" + parNameInt[i], SqlDbType.Int).Value = parValueInt[i];
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if ((int)table.Rows[0][0] == 0)
+                        return true;
+                    else
+                        return false;
                 }
             }
         }

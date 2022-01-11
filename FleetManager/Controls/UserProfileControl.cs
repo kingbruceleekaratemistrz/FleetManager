@@ -25,15 +25,19 @@ namespace FleetManager.Controls
             this.mainMenu = mainMenu;
 
             DataTable profileTable = SqlConn.GetTableProcedure("PROC_GET_USER_PROFILE", token);
-
-            this.FirstnameLabel.Text = profileTable.Rows[0]["first_name"].ToString();
-            this.LastnameLabel.Text = profileTable.Rows[0]["last_name"].ToString();
-            this.CompanyLabel.Text = profileTable.Rows[0]["company"].ToString();
-            this.PositionLabel.Text = profileTable.Rows[0]["position"].ToString();
-            this.PhoneLabel.Text = profileTable.Rows[0]["phone"].ToString();
-            this.MailLabel.Text = profileTable.Rows[0]["mail"].ToString();
-            this.CarLabel.Text = profileTable.Rows[0]["brand"].ToString() + ' ' + profileTable.Rows[0]["model"].ToString();
-            this.ProfilePictureBox.Image = Image.FromFile(profileTable.Rows[0]["photo_url"].ToString());
+            if (profileTable == null)
+                mainMenu.ExitProgram();
+            else
+            {
+                this.FirstnameLabel.Text = profileTable.Rows[0]["first_name"].ToString();
+                this.LastnameLabel.Text = profileTable.Rows[0]["last_name"].ToString();
+                this.CompanyLabel.Text = profileTable.Rows[0]["company"].ToString();
+                this.PositionLabel.Text = profileTable.Rows[0]["position"].ToString();
+                this.PhoneLabel.Text = profileTable.Rows[0]["phone"].ToString();
+                this.MailLabel.Text = profileTable.Rows[0]["mail"].ToString();
+                this.CarLabel.Text = profileTable.Rows[0]["brand"].ToString() + ' ' + profileTable.Rows[0]["model"].ToString();
+                this.ProfilePictureBox.Image = Image.FromFile(profileTable.Rows[0]["photo_url"].ToString());
+            }
         }
 
         public UserProfileControl(byte[] token, MainMenu mainMenu, string username)
@@ -42,15 +46,19 @@ namespace FleetManager.Controls
             this.mainMenu = mainMenu;
 
             DataTable profileTable = SqlConn.GetTableProcedure("PROC_GET_USER_PROFILE", "input_username", username, token);
-
-            this.FirstnameLabel.Text = profileTable.Rows[0]["first_name"].ToString();
-            this.LastnameLabel.Text = profileTable.Rows[0]["last_name"].ToString();
-            this.CompanyLabel.Text = profileTable.Rows[0]["company"].ToString();
-            this.PositionLabel.Text = profileTable.Rows[0]["position"].ToString();
-            this.PhoneLabel.Text = profileTable.Rows[0]["phone"].ToString();
-            this.MailLabel.Text = profileTable.Rows[0]["mail"].ToString();
-            this.CarLabel.Text = profileTable.Rows[0]["brand"].ToString() + ' ' + profileTable.Rows[0]["model"].ToString();
-            this.ProfilePictureBox.Image = Image.FromFile(profileTable.Rows[0]["photo_url"].ToString());
+            if (profileTable == null)
+                mainMenu.ExitProgram();
+            else
+            {
+                this.FirstnameLabel.Text = profileTable.Rows[0]["first_name"].ToString();
+                this.LastnameLabel.Text = profileTable.Rows[0]["last_name"].ToString();
+                this.CompanyLabel.Text = profileTable.Rows[0]["company"].ToString();
+                this.PositionLabel.Text = profileTable.Rows[0]["position"].ToString();
+                this.PhoneLabel.Text = profileTable.Rows[0]["phone"].ToString();
+                this.MailLabel.Text = profileTable.Rows[0]["mail"].ToString();
+                this.CarLabel.Text = profileTable.Rows[0]["brand"].ToString() + ' ' + profileTable.Rows[0]["model"].ToString();
+                this.ProfilePictureBox.Image = Image.FromFile(profileTable.Rows[0]["photo_url"].ToString());
+            }
         }
 
         private void CarLabel_Click(object sender, EventArgs e)

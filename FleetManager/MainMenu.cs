@@ -13,6 +13,7 @@ namespace FleetManager
 {
     public partial class MainMenu : Form
     {
+        private bool sessionOK;
         private byte[] token;
         private LoginMenu loginMenu;
 
@@ -20,6 +21,7 @@ namespace FleetManager
         {
             // token używany jest przy tworzeniu nowych kontrolek w celu autoryzacji sesji
             // loginMenu umożliwia powrót do menu logowania, lub zakończenie działanie programu
+            this.sessionOK = true;
             this.token = token;
             this.loginMenu = loginMenu;
 
@@ -27,6 +29,11 @@ namespace FleetManager
 
             // inicjalizacja
             DataTable dataTable = SqlConn.GetTableProcedure("PROC_GET_SHORT_USER_PROFILE", token);
+            if (dataTable == null)
+            {
+                sessionOK = false;
+                Application.Exit();            
+            }
             FirstNameLabel.Text = dataTable.Rows[0]["first_name"].ToString();
             LastNameLabel.Text = dataTable.Rows[0]["last_name"].ToString();
             CompanyNameLabel.Text = dataTable.Rows[0]["company"].ToString();
@@ -40,15 +47,22 @@ namespace FleetManager
 
         private void MainMenu_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (MessageBox.Show("Czy chcesz się wylogować?", "Fleet Manager", MessageBoxButtons.YesNo) == DialogResult.No)
-                e.Cancel = true;
-            else
+            if (sessionOK == true)
             {
-                SqlConn.CallLogoutProcedure(token);
-                if (MessageBox.Show("Czy chcesz wyjść z aplikacji?", "FleetManager", MessageBoxButtons.YesNo) == DialogResult.No)
-                    loginMenu.Show(); // MainMenu zakończy działanie i LoginMenu pokaże się na ekranie
+                if (MessageBox.Show("Czy chcesz się wylogować?", "Fleet Manager", MessageBoxButtons.YesNo) == DialogResult.No)
+                    e.Cancel = true;
                 else
-                    loginMenu.Close(); // Zakończenie działanie całego programu
+                {
+                    SqlConn.CallLogoutProcedure(token);
+                    if (MessageBox.Show("Czy chcesz wyjść z aplikacji?", "FleetManager", MessageBoxButtons.YesNo) == DialogResult.No)
+                        loginMenu.Show(); // MainMenu zakończy działanie i LoginMenu pokaże się na ekranie
+                    else
+                        loginMenu.Close(); // Zakończenie działanie całego programu
+                }
+            }
+            else 
+            {
+                loginMenu.Close();
             }
         }
 
@@ -91,7 +105,7 @@ namespace FleetManager
 
         private void ShowCarList_Click(object sender, EventArgs e)
         {
-            CarsListControl ctrl = new CarsListControl(token);
+            CarsListControl ctrl = new CarsListControl(token, this);
             this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
@@ -112,14 +126,14 @@ namespace FleetManager
 
         public void ShowCompanyProfile()
         {
-            CompanyProfileControl ctrl = new CompanyProfileControl(token);
+            CompanyProfileControl ctrl = new CompanyProfileControl(token, this);
             this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
 
         public void ShowCarProfile()
         {
-            CarProfileControl ctrl = new CarProfileControl(token);
+            CarProfileControl ctrl = new CarProfileControl(token, this);
             this.MainPanel.Controls.Clear();
             this.MainPanel.Controls.Add(ctrl);
         }
@@ -132,6 +146,13 @@ namespace FleetManager
         }
 
         #endregion
+
+
+        public void ExitProgram()
+        {
+            sessionOK = false;
+            this.Close();
+        }
 
     }
 }

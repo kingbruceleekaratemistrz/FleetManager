@@ -17,14 +17,17 @@ namespace FleetManager
         private List<int> cost = new List<int>();
         private byte[] token;
         private int id;
+        private MainMenu mainMenu;
 
         public RegisterVisitMenu()
         {
             InitializeComponent();
         }
 
-        public RegisterVisitMenu(byte[] token, string name, int id)
+        public RegisterVisitMenu(byte[] token, string name, int id, MainMenu mainMenu)
         {
+            this.mainMenu = mainMenu;
+
             // Inicjalizacja i przypisanie wartości
             InitializeComponent();
             this.token = token;
@@ -62,16 +65,20 @@ namespace FleetManager
 
             // Pobranie danych o usługach
             DataTable serviceTable = SqlConn.GetTableProcedure("PROC_GET_SERVICES", token);
-            
-            for (int i = 0; i < serviceTable.Rows.Count; i++)
+            if (serviceTable == null)
+                mainMenu.ExitProgram();
+            else
             {
-                // Zapisanie danych o usługach
-                description.Add(serviceTable.Rows[i]["description"].ToString());
-                cost.Add((int)serviceTable.Rows[i]["cost"]);
-                time.Add(serviceTable.Rows[i]["time"].ToString());
+                for (int i = 0; i < serviceTable.Rows.Count; i++)
+                {
+                    // Zapisanie danych o usługach
+                    description.Add(serviceTable.Rows[i]["description"].ToString());
+                    cost.Add((int)serviceTable.Rows[i]["cost"]);
+                    time.Add(serviceTable.Rows[i]["time"].ToString());
 
-                // Dodawanie usług do ComboBoxa
-                this.ServiceComboBox.Items.Add(serviceTable.Rows[i]["description"].ToString());
+                    // Dodawanie usług do ComboBoxa
+                    this.ServiceComboBox.Items.Add(serviceTable.Rows[i]["description"].ToString());
+                }
             }
         }
 
@@ -106,8 +113,15 @@ namespace FleetManager
             string[] parNameInt = { "service_id", "car_service_id" };
             int[] parValueInt = { this.ServiceComboBox.SelectedIndex + 1, this.id };
 
-            SqlConn.InsertIntoTableProcedure("PROC_INSERT_REPAIR_HISTORY", parNameStr, parValueStr, parNameInt, parValueInt, token);
-           
+            bool res = SqlConn.InsertIntoTableProcedure("PROC_INSERT_REPAIR_HISTORY", parNameStr, parValueStr, parNameInt, parValueInt, token);
+            if (res == false)
+            {
+                MessageBox.Show("Nie udało się zarejestrować wizyty w warsztacie.\nBłędny token sesji.\nNastąpi zamknięcie programu.");
+                mainMenu.ExitProgram();
+            }
+            else
+                MessageBox.Show("Pomyślnie zarezerwowano termin wizyty w warsztacie.");
+
             this.DialogResult = DialogResult.OK;
         }
 
