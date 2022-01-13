@@ -34,6 +34,8 @@ namespace FleetManager.Controls
             this.AddressLabel = new System.Windows.Forms.Label();
             this.PhoneLabel = new System.Windows.Forms.Label();
             this.MailLabel = new System.Windows.Forms.Label();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.EditionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // NameLabel
@@ -86,11 +88,33 @@ namespace FleetManager.Controls
             this.MailLabel.TabIndex = 4;
             this.MailLabel.Text = "mail";
             // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(780, 129);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton.TabIndex = 23;
+            this.SaveButton.Text = "Zapisz";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // EditionButton
+            // 
+            this.EditionButton.Location = new System.Drawing.Point(780, 100);
+            this.EditionButton.Name = "EditionButton";
+            this.EditionButton.Size = new System.Drawing.Size(75, 23);
+            this.EditionButton.TabIndex = 22;
+            this.EditionButton.Text = "Edytuj";
+            this.EditionButton.UseVisualStyleBackColor = true;
+            this.EditionButton.Click += new System.EventHandler(this.EditionButton_Click);
+            // 
             // CompanyProfileControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.EditionButton);
             this.Controls.Add(this.MailLabel);
             this.Controls.Add(this.PhoneLabel);
             this.Controls.Add(this.AddressLabel);
@@ -112,5 +136,7 @@ namespace FleetManager.Controls
         private System.Windows.Forms.Label AddressLabel;
         private System.Windows.Forms.Label PhoneLabel;
         private System.Windows.Forms.Label MailLabel;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button EditionButton;
     }
 }

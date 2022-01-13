@@ -128,7 +128,29 @@ namespace FleetManager
 
         #endregion
 
-        #region Procedury dodające rekordy do bazy
+        #region Procedury dodające/aktualizujące rekordy do bazy
+
+        public static bool InsertIntoTableProcedure(string procName, string parName, string parValue, byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(procName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+                    cmd.Parameters.Add("@" + parName, SqlDbType.NVarChar).Value = parValue;
+                    
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if ((int)table.Rows[0][0] == 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+        }
 
         public static bool InsertIntoTableProcedure(string procName, string[] parName, string[] parValue, byte[] token)
         {

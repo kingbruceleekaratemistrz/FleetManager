@@ -87,12 +87,46 @@ GO
 
 
 
+/* Procedura zwracaj¹ca poziom dostêpu u¿ytkownika,
+** do którego przypisany jest @token, przes³any jako
+** parametr. Zwraca:
+** -1 - podany @token nie znajduje sie w CONF_SESSIONS
+** 0 - podstawowy poziom dostêpu
+** 1 - poziom dostêpu administratora firmy
+** 2- poziom dostêpu administratora aplikacji */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_ACC')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_ACC AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_GET_ACC @token varbinary(64)
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	SELECT u.acc FROM USERS_CRED u
+	JOIN CONF_SESSIONS c ON u.username=c.username
+	WHERE c.sessionID=@token
+RETURN
+GO
+
+
+
 /* Procedura zwracaj¹ca informacje o profilu pojazdu.
 ** @token s³u¿y do weryfikacji sesji, jeœli podany @token
 ** nie znajduje siê w tabeli CONF_SESSIONS to procedura
 ** nie zwróci danych. Jeœli @username jest pominiêty procedura
-** zwróci dane o profilu pasuj¹cym do @token
-*/
+** zwróci dane o profilu pasuj¹cym do @token */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -136,8 +170,7 @@ GO
 /* Procedura zwracaj¹ca informacje o profilu warsztatu. 
 ** @token s³u¿y do weryfikacji sesji, jeœli podany @token
 ** nie znajduje siê w tabeli CONF_SESSIONS to procedura
-** nie zwróci danych.
-*/
+** nie zwróci danych. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -169,8 +202,7 @@ GO
 
 
 
-/* Procedura zwracaj¹ca listê warsztatów.
-*/
+/* Procedura zwracaj¹ca listê warsztatów. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -201,8 +233,7 @@ GO
 
 
 
-/* Procedura zwracaj¹ca listê pojazdów z bazy danych.
-*/
+/* Procedura zwracaj¹ca listê pojazdów z bazy danych. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -236,8 +267,7 @@ GO
 /* Procedura zwracaj¹ca informacje o profilu firmy. 
 ** @token s³u¿y do weryfikacji sesji, jeœli podany @token
 ** nie znajduje siê w tabeli CONF_SESSIONS to procedura
-** nie zwróci danych.
-*/
+** nie zwróci danych. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -277,8 +307,7 @@ GO
 
 
 
-/* Procedura zwracaj¹ca listê us³ug warsztatowych.
-*/
+/* Procedura zwracaj¹ca listê us³ug warsztatowych. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -350,8 +379,7 @@ GO
 ** @token s³u¿y do weryfikacji sesji, jeœli podany @token
 ** nie znajduje siê w tabeli CONF_SESSIONS to procedura
 ** nie zwróci danych. Jeœli @username jest pominiêty procedura
-** zwróci dane o profilu pasuj¹cym do @token
-*/
+** zwróci dane o profilu pasuj¹cym do @token */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -395,8 +423,7 @@ GO
 
 /* Procedura zwracaj¹ca listê u¿ytkowników z firmy,
 ** do której nale¿y u¿ytkownik, którego @token zosta³
-** przekazany jako parametr.
-*/
+** przekazany jako parametr. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -432,8 +459,7 @@ GO
 
 
 
-/* Procedura wstawiaj¹ca rekord do tabeli REPAIR_HISTORY.
-*/
+/* Procedura wstawiaj¹ca rekord do tabeli REPAIR_HISTORY. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -475,7 +501,210 @@ GO
 
 
 
+/* Procedura aktualizuj¹ca rekord w tabeli COMP_PROFILES
+** Jeœli @input_comp jest pominiêty, zostanie przypisany companu powi¹zany z @token.
+** description = @new_description
+** address = @new_address
+** phone = @new_phone
+** mail = @new_mail
+** Ulegn¹ zmianie tylko te wartoœci, dla których bêdzie przekazany odpowiedni parametr przy wywo³aniu procedury. */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_UPDATE_COMP_PROFILES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_UPDATE_COMP_PROFILES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_UPDATE_COMP_PROFILES (@token varbinary(64), @new_description nvarchar(300) = NULL, @new_address nvarchar(100) = NULL, @new_phone nvarchar(9) = NULL, @new_mail nvarchar(100) = NULL, @input_comp nvarchar(30) = NULL)
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	IF @input_comp IS NULL
+	BEGIN
+		SELECT @input_comp = u.company FROM USERS_PROFILES u
+		JOIN CONF_SESSIONS s ON u.username = s.username
+		WHERE sessionID=@token
+	END
+
+	IF @new_description IS NULL
+	BEGIN
+		SELECT @new_description = [description] FROM COMP_PROFILES
+		WHERE name = @input_comp
+	END
+
+	IF @new_address IS NULL
+	BEGIN
+		SELECT @new_address = [address] FROM COMP_PROFILES
+		WHERE name = @input_comp
+	END
+
+	IF @new_phone IS NULL
+	BEGIN
+		SELECT @new_phone = phone FROM COMP_PROFILES
+		WHERE name = @input_comp
+	END
+
+	IF @new_mail IS NULL
+	BEGIN
+		SELECT @new_mail = mail FROM COMP_PROFILES
+		WHERE name = @input_comp
+	END
+
+
+	DECLARE @sql nvarchar(700)
+
+	SET @sql = N'USE fleet_db'
+			+ N' UPDATE COMP_PROFILES'
+			+ N' SET [description] = ''' + @new_description + ''','
+			+ N' [address] = ''' + @new_address + ''','
+			+ N' phone = ''' + @new_phone + ''','
+			+ N' mail = ''' + @new_mail + ''''
+			+ N' WHERE name = ''' + @input_comp + ''''
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
 
 
 
+/* Procedura aktualizuj¹ca rekord w tabeli USERS_CRED.
+** Jeœli @input_username jest pominiêty, zostanie przypisany username powi¹zany z @token.
+** passwd zostanie zmienione na @new_passwd dla u¿ytkownika @input_username. */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_UPDATE_USERS_CRED')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_UPDATE_USERS_CRED AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_UPDATE_USERS_CRED (@token varbinary(64), @new_passwd nvarchar(30), @input_username nvarchar(30) = NULL)
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	IF @input_username IS NULL
+	BEGIN
+		SELECT @input_username = username FROM CONF_SESSIONS
+		WHERE sessionID=@token
+	END
+
+	DECLARE @sql nvarchar(200)
+
+	SET @sql = N'USE fleet_db'
+			+ N' UPDATE USERS_CRED'
+			+ N' SET passwd = ''' + @new_passwd + ''''
+			+ N' WHERE username = ''' + @input_username + ''''
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
+
+
+
+/* Procedura aktualizuj¹ca rekord w tabeli USERS_PROFILES
+** Jeœli @input_username jest pominiêty, zostanie przypisany username powi¹zany z @token.
+** first_name = @new_first_name
+** last_name = @new_last_name
+** position = @new_position
+** photo_url = @new_photo_url
+** phone = @new_phone
+** mail = @new_mail
+** Ulegn¹ zmianie tylko te wartoœci, dla których bêdzie przekazany odpowiedni parametr przy wywo³aniu procedury. */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_UPDATE_USERS_PROFILES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_UPDATE_USERS_PROFILES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_UPDATE_USERS_PROFILES (@token varbinary(64), @new_first_name nvarchar(30) = NULL, @new_last_name nvarchar(50) = NULL, @new_position nvarchar(50) = NULL, @new_photo_url nvarchar(100) = NULL, @new_phone nvarchar(9) = NULL, @new_mail nvarchar(100) = NULL, @input_username nvarchar(30) = NULL)
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	IF @input_username IS NULL
+	BEGIN
+		SELECT @input_username = username FROM CONF_SESSIONS
+		WHERE sessionID=@token
+	END
+
+	IF @new_first_name IS NULL
+	BEGIN
+		SELECT @new_first_name = first_name FROM USERS_PROFILES
+		WHERE username = @input_username
+	END
+
+	IF @new_last_name IS NULL
+	BEGIN
+		SELECT @new_last_name = last_name FROM USERS_PROFILES
+		WHERE username = @input_username
+	END
+
+	IF @new_position IS NULL
+	BEGIN
+		SELECT @new_position = position FROM USERS_PROFILES
+		WHERE username = @input_username
+	END
+
+	IF @new_photo_url IS NULL
+	BEGIN
+		SELECT @new_photo_url = photo_url FROM USERS_PROFILES
+		WHERE username = @input_username
+	END
+
+	IF @new_phone IS NULL
+	BEGIN
+		SELECT @new_phone = phone FROM USERS_PROFILES
+		WHERE username = @input_username
+	END
+
+	IF @new_mail IS NULL
+	BEGIN
+		SELECT @new_mail = mail FROM USERS_PROFILES
+		WHERE username = @input_username
+	END
+
+	DECLARE @sql nvarchar(700)
+
+	SET @sql = N'USE fleet_db'
+			+ N' UPDATE USERS_PROFILES'
+			+ N' SET first_name = ''' + @new_first_name + ''','
+			+ N' last_name = ''' + @new_last_name + ''','
+			+ N' position = ''' + @new_position + ''','
+			+ N' photo_url = ''' + @new_photo_url + ''','
+			+ N' phone = ''' + @new_phone + ''','
+			+ N' mail = ''' + @new_mail + ''''
+			+ N' WHERE username = ''' + @input_username + ''''
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
 

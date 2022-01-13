@@ -138,6 +138,13 @@ namespace FleetManager
             this.MainPanel.Controls.Add(ctrl);
         }
 
+        public void ShowCarProfile(string username)
+        {
+            CarProfileControl ctrl = new CarProfileControl(token, this, username);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(ctrl);
+        }
+
         public void ShowCarServiceProfile(int id)
         {
             CarServiceControl ctrl = new CarServiceControl(token, this, id);

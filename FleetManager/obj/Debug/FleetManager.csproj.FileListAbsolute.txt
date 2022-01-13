@@ -30,3 +30,4 @@ C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CarServicesListControl.resources
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.Controls.CarServiceControl.resources
 C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.RegisterVisitMenu.resources
+C:\Users\pduln\Documents\GitHub\FleetManager\FleetManager\obj\Debug\FleetManager.ChangePasswordMenu.resources

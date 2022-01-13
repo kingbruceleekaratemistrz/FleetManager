@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChangePasswordMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChangePasswordMenu.Designer.cs">
+      <DependentUpon>ChangePasswordMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CarProfileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -115,6 +121,9 @@
       <DependentUpon>RegisterVisitMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="SqlConn.cs" />
+    <EmbeddedResource Include="ChangePasswordMenu.resx">
+      <DependentUpon>ChangePasswordMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CarProfileControl.resx">
       <DependentUpon>CarProfileControl.cs</DependentUpon>
     </EmbeddedResource>
