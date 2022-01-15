@@ -10,8 +10,8 @@ namespace FleetManager
         public LoginMenu()
         {
             InitializeComponent();
-            this.UsernameBox.Text = "cameron";
-            this.PasswordBox.Text = "solo";
+            this.UsernameBox.Text = "dulnikip";
+            this.PasswordBox.Text = "123";
         }
 
         private void LoginButton_Click(object sender, EventArgs e)

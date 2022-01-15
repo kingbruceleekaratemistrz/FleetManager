@@ -95,7 +95,7 @@ namespace FleetManager.Controls
                 EditionButton.Enabled = EditionButton.Visible = true;
                 SaveButton.Enabled = SaveButton.Visible = false;
                 ChangePasswordButton.Enabled = ChangePasswordButton.Visible = true;
-            }
+            }            
         }
 
         private void Reload()
@@ -158,11 +158,24 @@ namespace FleetManager.Controls
         {
             Label[] labelsToHide = { FirstnameLabel, LastnameLabel, PositionLabel, PhoneLabel, MailLabel };
             Label[] labelsToGreyOut = { CompanyLabel, CarLabel };
+            string[] labelTexts = { "Imię:", "Nazwisko:", "Stanowisko:", "Nr telefonu:", "Adres email:" };
             TextBox textBox;
+            Label label;
 
             // Schowanie labeli z labelsToHide i wstawienie na ich miejsce textBoxów
+            int k = 0;
             foreach (Label lb in labelsToHide)
             {
+                label = new Label()
+                {
+                    Name = lb.Name + "EditLab",
+                    Location = new Point(lb.Location.X - 100, lb.Location.Y),
+                    Width = 100,
+                    Text = labelTexts[k++],
+                    Enabled = true,
+                    Visible = true
+                };
+
                 textBox = new TextBox
                 {
                     Name = lb.Name + "Edit",
@@ -171,11 +184,23 @@ namespace FleetManager.Controls
                     Enabled = true,
                     Visible = true
                 };
+
                 lb.Enabled = lb.Visible = false;
+                this.Controls.Add(label);
                 this.Controls.Add(textBox);
             }
 
             // Schowanie ProfilePictrueBox i wstawienie textBoxa
+            label = new Label()
+            {
+                Name = ProfilePictureBox.Name + "EditLab",
+                Location = new Point(ProfilePictureBox.Location.X - 100, ProfilePictureBox.Location.Y),
+                Width = 100,
+                Text = "Ścieżka do zdjęcia:",
+                Enabled = true,
+                Visible = true
+            };
+
             textBox = new TextBox
             {
                 Name = ProfilePictureBox.Name + "Edit",
@@ -184,6 +209,7 @@ namespace FleetManager.Controls
             };
             textBox.Enabled = textBox.Visible = true;
             ProfilePictureBox.Enabled = ProfilePictureBox.Visible = false;
+            this.Controls.Add(label);
             this.Controls.Add(textBox);
 
             // Wyszarzenie labeli z labelToGrayOut
@@ -209,6 +235,13 @@ namespace FleetManager.Controls
             {
                 List<string> parName = new List<string>();
                 List<string> parValue = new List<string>();
+
+                // sprawdzanie zmiennej username
+                if (username != null)
+                {
+                    parName.Add("input_username");
+                    parValue.Add(username);
+                }    
 
                 // sprawdzanie textboxa First_name                
                 string newFirstname = this.Controls[FirstnameLabel.Name + "Edit"].Text;

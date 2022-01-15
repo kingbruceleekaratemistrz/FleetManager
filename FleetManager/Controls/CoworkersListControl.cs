@@ -32,7 +32,7 @@ namespace FleetManager.Controls
 
         private string[] LoadCoworkersList(byte[] token)
         {
-            DataTable coworks = SqlConn.GetTableProcedure("PROC_GET_USERS_LIST", token);
+            DataTable coworks = SqlConn.GetTableProcedure("PROC_GET_COWORKERS_LIST", token);
             if (coworks == null)
                 mainMenu.ExitProgram();
             else

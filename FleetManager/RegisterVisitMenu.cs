@@ -103,12 +103,12 @@ namespace FleetManager
             string date = this.DateTimePicker.Value.ToString("yyyy'-'MM'-'dd");
             string hour = this.HourComboBox.SelectedItem.ToString();
             if (hour.Length == 3)
-                hour = hour.Insert(1, ":");
-            else
-                hour = hour.Insert(2, ":");
+                hour = "0" + hour;
+         
+            hour = hour.Insert(2, ":");
 
             string[] parNameStr = { "date" };
-            string[] parValueStr = { date + "T" + hour + ":00" };
+            string[] parValueStr = { date + "T" + hour + ":00" };            
 
             string[] parNameInt = { "service_id", "car_service_id" };
             int[] parValueInt = { this.ServiceComboBox.SelectedIndex + 1, this.id };
@@ -138,6 +138,8 @@ namespace FleetManager
                         this.HourComboBox.Items.Add(tmpHour);
                     // wzrost naprzemian o 30 i 70. Dzieki temu tmphour przyjmuje wartosci: 800, 830, 900, 930...
                     tmpHour += i % 2 == 0 ? 30 : 70;
+
+                    this.HourComboBox.SelectedIndex = 0;
                 }
             }
             else
@@ -148,6 +150,8 @@ namespace FleetManager
                 {
                     this.HourComboBox.Items.Add(tmpHour);
                     tmpHour += i % 2 == 0 ? 30 : 70;
+
+                    this.HourComboBox.SelectedIndex = 0;
                 }
             }
         }

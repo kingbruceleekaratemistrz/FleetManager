@@ -31,17 +31,21 @@ namespace FleetManager
         {
             this.MainPanel = new System.Windows.Forms.Panel();
             this.SidePanel = new System.Windows.Forms.Panel();
+            this.AddDataButton = new System.Windows.Forms.Button();
             this.CompanyNameLabel = new System.Windows.Forms.Label();
             this.LastNameLabel = new System.Windows.Forms.Label();
             this.FirstNameLabel = new System.Windows.Forms.Label();
             this.ProfilePictureBox = new System.Windows.Forms.PictureBox();
             this.LinkTableLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.ShowCompaniesList = new System.Windows.Forms.Label();
+            this.ShowCarServicesListLabel = new System.Windows.Forms.Label();
             this.ShowCarListLabel = new System.Windows.Forms.Label();
             this.ShowCoworkersListLabel = new System.Windows.Forms.Label();
             this.ShowCarProfileLabel = new System.Windows.Forms.Label();
             this.ShowCompanyProfileLabel = new System.Windows.Forms.Label();
             this.ShowUserProfileLabel = new System.Windows.Forms.Label();
-            this.ShowCarServicesListLabel = new System.Windows.Forms.Label();
+            this.ShowUsersListLabel = new System.Windows.Forms.Label();
+            this.ShowRepairHistoryLabel = new System.Windows.Forms.Label();
             this.SidePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.ProfilePictureBox)).BeginInit();
             this.LinkTableLayout.SuspendLayout();
@@ -57,6 +61,7 @@ namespace FleetManager
             // SidePanel
             // 
             this.SidePanel.BackColor = System.Drawing.SystemColors.MenuHighlight;
+            this.SidePanel.Controls.Add(this.AddDataButton);
             this.SidePanel.Controls.Add(this.CompanyNameLabel);
             this.SidePanel.Controls.Add(this.LastNameLabel);
             this.SidePanel.Controls.Add(this.FirstNameLabel);
@@ -66,6 +71,16 @@ namespace FleetManager
             this.SidePanel.Name = "SidePanel";
             this.SidePanel.Size = new System.Drawing.Size(340, 680);
             this.SidePanel.TabIndex = 0;
+            // 
+            // AddDataButton
+            // 
+            this.AddDataButton.Location = new System.Drawing.Point(70, 544);
+            this.AddDataButton.Name = "AddDataButton";
+            this.AddDataButton.Size = new System.Drawing.Size(117, 36);
+            this.AddDataButton.TabIndex = 6;
+            this.AddDataButton.Text = "Dodaj dane";
+            this.AddDataButton.UseVisualStyleBackColor = true;
+            this.AddDataButton.Click += new System.EventHandler(this.AddDataButton_Click);
             // 
             // CompanyNameLabel
             // 
@@ -106,29 +121,57 @@ namespace FleetManager
             // 
             this.LinkTableLayout.ColumnCount = 1;
             this.LinkTableLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.LinkTableLayout.Controls.Add(this.ShowCompaniesList, 0, 7);
             this.LinkTableLayout.Controls.Add(this.ShowCarServicesListLabel, 0, 5);
             this.LinkTableLayout.Controls.Add(this.ShowCarListLabel, 0, 4);
             this.LinkTableLayout.Controls.Add(this.ShowCoworkersListLabel, 0, 3);
             this.LinkTableLayout.Controls.Add(this.ShowCarProfileLabel, 0, 2);
             this.LinkTableLayout.Controls.Add(this.ShowCompanyProfileLabel, 0, 1);
             this.LinkTableLayout.Controls.Add(this.ShowUserProfileLabel, 0, 0);
+            this.LinkTableLayout.Controls.Add(this.ShowUsersListLabel, 0, 8);
+            this.LinkTableLayout.Controls.Add(this.ShowRepairHistoryLabel, 0, 6);
             this.LinkTableLayout.Location = new System.Drawing.Point(70, 229);
             this.LinkTableLayout.Name = "LinkTableLayout";
-            this.LinkTableLayout.RowCount = 6;
-            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.665F));
-            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.665F));
-            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.665F));
-            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.665F));
-            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.665F));
-            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 16.675F));
-            this.LinkTableLayout.Size = new System.Drawing.Size(200, 172);
+            this.LinkTableLayout.RowCount = 9;
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.11F));
+            this.LinkTableLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 11.12F));
+            this.LinkTableLayout.Size = new System.Drawing.Size(200, 227);
             this.LinkTableLayout.TabIndex = 1;
+            // 
+            // ShowCompaniesList
+            // 
+            this.ShowCompaniesList.AutoSize = true;
+            this.ShowCompaniesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowCompaniesList.Location = new System.Drawing.Point(3, 175);
+            this.ShowCompaniesList.Name = "ShowCompaniesList";
+            this.ShowCompaniesList.Size = new System.Drawing.Size(73, 20);
+            this.ShowCompaniesList.TabIndex = 7;
+            this.ShowCompaniesList.Text = "Lista firm";
+            this.ShowCompaniesList.Click += new System.EventHandler(this.ShowCompaniesList_Click);
+            // 
+            // ShowCarServicesListLabel
+            // 
+            this.ShowCarServicesListLabel.AutoSize = true;
+            this.ShowCarServicesListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowCarServicesListLabel.Location = new System.Drawing.Point(3, 125);
+            this.ShowCarServicesListLabel.Name = "ShowCarServicesListLabel";
+            this.ShowCarServicesListLabel.Size = new System.Drawing.Size(127, 20);
+            this.ShowCarServicesListLabel.TabIndex = 5;
+            this.ShowCarServicesListLabel.Text = "Lista warsztatów";
+            this.ShowCarServicesListLabel.Click += new System.EventHandler(this.ShowCarServicesList);
             // 
             // ShowCarListLabel
             // 
             this.ShowCarListLabel.AutoSize = true;
             this.ShowCarListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCarListLabel.Location = new System.Drawing.Point(3, 112);
+            this.ShowCarListLabel.Location = new System.Drawing.Point(3, 100);
             this.ShowCarListLabel.Name = "ShowCarListLabel";
             this.ShowCarListLabel.Size = new System.Drawing.Size(114, 20);
             this.ShowCarListLabel.TabIndex = 4;
@@ -139,7 +182,7 @@ namespace FleetManager
             // 
             this.ShowCoworkersListLabel.AutoSize = true;
             this.ShowCoworkersListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCoworkersListLabel.Location = new System.Drawing.Point(3, 84);
+            this.ShowCoworkersListLabel.Location = new System.Drawing.Point(3, 75);
             this.ShowCoworkersListLabel.Name = "ShowCoworkersListLabel";
             this.ShowCoworkersListLabel.Size = new System.Drawing.Size(179, 20);
             this.ShowCoworkersListLabel.TabIndex = 3;
@@ -150,7 +193,7 @@ namespace FleetManager
             // 
             this.ShowCarProfileLabel.AutoSize = true;
             this.ShowCarProfileLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCarProfileLabel.Location = new System.Drawing.Point(3, 56);
+            this.ShowCarProfileLabel.Location = new System.Drawing.Point(3, 50);
             this.ShowCarProfileLabel.Name = "ShowCarProfileLabel";
             this.ShowCarProfileLabel.Size = new System.Drawing.Size(85, 20);
             this.ShowCarProfileLabel.TabIndex = 2;
@@ -161,7 +204,7 @@ namespace FleetManager
             // 
             this.ShowCompanyProfileLabel.AutoSize = true;
             this.ShowCompanyProfileLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCompanyProfileLabel.Location = new System.Drawing.Point(3, 28);
+            this.ShowCompanyProfileLabel.Location = new System.Drawing.Point(3, 25);
             this.ShowCompanyProfileLabel.Name = "ShowCompanyProfileLabel";
             this.ShowCompanyProfileLabel.Size = new System.Drawing.Size(81, 20);
             this.ShowCompanyProfileLabel.TabIndex = 1;
@@ -179,16 +222,27 @@ namespace FleetManager
             this.ShowUserProfileLabel.Text = "Mój profil";
             this.ShowUserProfileLabel.Click += new System.EventHandler(this.ShowUserProfile_Click);
             // 
-            // ShowCarServicesListLabel
+            // ShowUsersListLabel
             // 
-            this.ShowCarServicesListLabel.AutoSize = true;
-            this.ShowCarServicesListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
-            this.ShowCarServicesListLabel.Location = new System.Drawing.Point(3, 140);
-            this.ShowCarServicesListLabel.Name = "ShowCarServicesListLabel";
-            this.ShowCarServicesListLabel.Size = new System.Drawing.Size(127, 20);
-            this.ShowCarServicesListLabel.TabIndex = 5;
-            this.ShowCarServicesListLabel.Text = "Lista warsztatów";
-            this.ShowCarServicesListLabel.Click += new System.EventHandler(this.ShowCarServicesList);
+            this.ShowUsersListLabel.AutoSize = true;
+            this.ShowUsersListLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowUsersListLabel.Location = new System.Drawing.Point(3, 200);
+            this.ShowUsersListLabel.Name = "ShowUsersListLabel";
+            this.ShowUsersListLabel.Size = new System.Drawing.Size(144, 20);
+            this.ShowUsersListLabel.TabIndex = 6;
+            this.ShowUsersListLabel.Text = "Lista użytkowników";
+            this.ShowUsersListLabel.Click += new System.EventHandler(this.ShowUsersListLabel_Click);
+            // 
+            // ShowRepairHistoryLabel
+            // 
+            this.ShowRepairHistoryLabel.AutoSize = true;
+            this.ShowRepairHistoryLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
+            this.ShowRepairHistoryLabel.Location = new System.Drawing.Point(3, 150);
+            this.ShowRepairHistoryLabel.Name = "ShowRepairHistoryLabel";
+            this.ShowRepairHistoryLabel.Size = new System.Drawing.Size(119, 20);
+            this.ShowRepairHistoryLabel.TabIndex = 8;
+            this.ShowRepairHistoryLabel.Text = "Historia napraw";
+            this.ShowRepairHistoryLabel.Click += new System.EventHandler(this.ShowRepairHistoryLabel_Click);
             // 
             // MainMenu
             // 
@@ -226,5 +280,9 @@ namespace FleetManager
         private System.Windows.Forms.Label ShowCompanyProfileLabel;
         private System.Windows.Forms.Label ShowUserProfileLabel;
         private System.Windows.Forms.Label ShowCarServicesListLabel;
+        private System.Windows.Forms.Label ShowCompaniesList;
+        private System.Windows.Forms.Label ShowUsersListLabel;
+        private System.Windows.Forms.Button AddDataButton;
+        private System.Windows.Forms.Label ShowRepairHistoryLabel;
     }
 }

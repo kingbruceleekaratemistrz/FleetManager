@@ -53,6 +53,7 @@ namespace FleetManager.Controls
             this.DescriptionLabel.AutoSize = true;
             this.DescriptionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.DescriptionLabel.Location = new System.Drawing.Point(100, 130);
+            this.DescriptionLabel.MaximumSize = new System.Drawing.Size(600, 0);
             this.DescriptionLabel.Name = "DescriptionLabel";
             this.DescriptionLabel.Size = new System.Drawing.Size(102, 24);
             this.DescriptionLabel.TabIndex = 1;

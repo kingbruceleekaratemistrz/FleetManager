@@ -66,7 +66,7 @@ namespace FleetManager
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
-                    if (table.Columns.Count == 1 && (int)table.Rows[0][0] == -1)
+                    if (table.Columns.Count == 1 && table.Rows.Count == 1 && (int)table.Rows[0][0] == -1)
                     {
                         MessageBox.Show("Nie udało się pobrać danych.\nBłędny token sesji.\nNastąpi zakończenie działania programu.");
                         return null;
@@ -91,7 +91,7 @@ namespace FleetManager
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
-                    if (table.Columns.Count == 1 && (int)table.Rows[0][0] == -1)
+                    if (table.Columns.Count == 1 && table.Rows.Count == 1 && (int)table.Rows[0][0] == -1)
                     {
                         MessageBox.Show("Nie udało się pobrać danych.\nBłędny token sesji.\nNastąpi zakończenie działania programu.");
                         return null;
@@ -115,7 +115,7 @@ namespace FleetManager
                     DataTable table = new DataTable();
                     adapter.Fill(table);
 
-                    if (table.Columns.Count == 1 && (int)table.Rows[0][0] == -1)
+                    if (table.Columns.Count == 1 && table.Rows.Count == 1 && (int)table.Rows[0][0] == -1)
                     {
                         MessageBox.Show("Nie udało się pobrać danych.\nBłędny token sesji.\nNastąpi zakończenie działania programu.");
                         return null;
@@ -234,6 +234,32 @@ namespace FleetManager
                         cmd.Parameters.Add("@" + parNameStr[i], SqlDbType.NVarChar).Value = parValueStr[i];
                     for (int i = 0; i < parNameInt.Length; i++)
                         cmd.Parameters.Add("@" + parNameInt[i], SqlDbType.Int).Value = parValueInt[i];
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    DataTable table = new DataTable();
+                    adapter.Fill(table);
+
+                    if ((int)table.Rows[0][0] == 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+        }
+
+        #endregion
+
+        #region Procedury usuwające rekordy z tabel
+
+        public static bool DeleteFromTableProcedure(string procName, string parName, string parValue, byte[] token)
+        {
+            using (SqlConnection conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand(procName, conn))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add("@token", SqlDbType.VarBinary).Value = token;
+                    cmd.Parameters.Add("@" + parName, SqlDbType.NVarChar).Value = parValue;
 
                     SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                     DataTable table = new DataTable();

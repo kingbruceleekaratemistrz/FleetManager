@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddDataMenu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AddDataMenu.Designer.cs">
+      <DependentUpon>AddDataMenu.cs</DependentUpon>
+    </Compile>
     <Compile Include="ChangePasswordMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -79,6 +85,12 @@
     <Compile Include="Controls\CarsListControl.Designer.cs">
       <DependentUpon>CarsListControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CompaniesListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\CompaniesListControl.Designer.cs">
+      <DependentUpon>CompaniesListControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CompanyProfileControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -91,6 +103,12 @@
     <Compile Include="Controls\CoworkersListControl.Designer.cs">
       <DependentUpon>CoworkersListControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\RepairHistoryListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\RepairHistoryListControl.Designer.cs">
+      <DependentUpon>RepairHistoryListControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UserProfileControl.cs">
       <SubType>UserControl</SubType>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -98,6 +116,12 @@
     <Compile Include="Controls\UserProfileControl.Designer.cs">
       <DependentUpon>UserProfileControl.cs</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="Controls\UsersListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\UsersListControl.Designer.cs">
+      <DependentUpon>UsersListControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Generator.cs" />
     <Compile Include="MainMenu.cs">
@@ -121,6 +145,9 @@
       <DependentUpon>RegisterVisitMenu.cs</DependentUpon>
     </Compile>
     <Compile Include="SqlConn.cs" />
+    <EmbeddedResource Include="AddDataMenu.resx">
+      <DependentUpon>AddDataMenu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ChangePasswordMenu.resx">
       <DependentUpon>ChangePasswordMenu.cs</DependentUpon>
     </EmbeddedResource>
@@ -136,15 +163,24 @@
     <EmbeddedResource Include="Controls\CarsListControl.resx">
       <DependentUpon>CarsListControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\CompaniesListControl.resx">
+      <DependentUpon>CompaniesListControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\CompanyProfileControl.resx">
       <DependentUpon>CompanyProfileControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\CoworkersListControl.resx">
       <DependentUpon>CoworkersListControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\RepairHistoryListControl.resx">
+      <DependentUpon>RepairHistoryListControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\UserProfileControl.resx">
       <DependentUpon>UserProfileControl.cs</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\UsersListControl.resx">
+      <DependentUpon>UsersListControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="LoginMenu.resx">
       <DependentUpon>LoginMenu.cs</DependentUpon>

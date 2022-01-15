@@ -247,6 +247,12 @@ INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, positi
 	VALUES ('user2', 'Frodo', 'Baggins', 'Netflix', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_3.png', '142511511', 'Shire@gmail.com', 'WU11354')
 */
 
+/* 
+INSERT INTO dbo.USERS_CRED (username, passwd, acc) VALUES ('dulnikip', '123', 2)
+INSERT INTO dbo.COMP_PROFILES (name, [description], [address], phone, mail) VALUES ('Politechnika Warszawska', 'Jesteœmy jedn¹ z najwiêkszych i najlepszych uczelni w Polsce. Od lat kszta³cimy kolejne pokolenia in¿ynierów i nie tylko in¿ynierów oraz prowadzimy wa¿ne badania, g³ównie z obszaru nauk technicznych.', 'Plac Politechniki 1
+00-661 Warszawa', '222347211', 'info@pw.edu.pl')
+INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_id, car_plate) VALUES ('dulnikip', 'Patryk', 'Dulnikiewicz', 'Politechnika Warszawska', 'Student','..\..\..\Assets\Profile_pictures\profile_pic_0.png', '695865558', '01153036@pw.edu.pl', 23, 'WA4S701')
+*/
 
 
 

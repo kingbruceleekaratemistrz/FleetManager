@@ -34,6 +34,8 @@ namespace FleetManager.Controls
             this.AddressLabel = new System.Windows.Forms.Label();
             this.NameLabel = new System.Windows.Forms.Label();
             this.RegisterVisitButton = new System.Windows.Forms.Button();
+            this.SaveButton = new System.Windows.Forms.Button();
+            this.EditionButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MailLabel
@@ -80,17 +82,39 @@ namespace FleetManager.Controls
             // 
             this.RegisterVisitButton.Location = new System.Drawing.Point(136, 283);
             this.RegisterVisitButton.Name = "RegisterVisitButton";
-            this.RegisterVisitButton.Size = new System.Drawing.Size(75, 23);
+            this.RegisterVisitButton.Size = new System.Drawing.Size(135, 23);
             this.RegisterVisitButton.TabIndex = 10;
-            this.RegisterVisitButton.Text = "button1";
+            this.RegisterVisitButton.Text = "Zarezerwuj termin wizyty";
             this.RegisterVisitButton.UseVisualStyleBackColor = true;
             this.RegisterVisitButton.Click += new System.EventHandler(this.RegisterVisitButton_Click);
+            // 
+            // SaveButton
+            // 
+            this.SaveButton.Location = new System.Drawing.Point(780, 129);
+            this.SaveButton.Name = "SaveButton";
+            this.SaveButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton.TabIndex = 25;
+            this.SaveButton.Text = "Zapisz";
+            this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
+            // 
+            // EditionButton
+            // 
+            this.EditionButton.Location = new System.Drawing.Point(780, 100);
+            this.EditionButton.Name = "EditionButton";
+            this.EditionButton.Size = new System.Drawing.Size(75, 23);
+            this.EditionButton.TabIndex = 24;
+            this.EditionButton.Text = "Edytuj";
+            this.EditionButton.UseVisualStyleBackColor = true;
+            this.EditionButton.Click += new System.EventHandler(this.EditionButton_Click);
             // 
             // CarServiceControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.GradientInactiveCaption;
+            this.Controls.Add(this.SaveButton);
+            this.Controls.Add(this.EditionButton);
             this.Controls.Add(this.RegisterVisitButton);
             this.Controls.Add(this.MailLabel);
             this.Controls.Add(this.PhoneLabel);
@@ -112,5 +136,7 @@ namespace FleetManager.Controls
         private System.Windows.Forms.Label AddressLabel;
         private System.Windows.Forms.Label NameLabel;
         private System.Windows.Forms.Button RegisterVisitButton;
+        private System.Windows.Forms.Button SaveButton;
+        private System.Windows.Forms.Button EditionButton;
     }
 }

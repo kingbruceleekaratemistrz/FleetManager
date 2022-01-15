@@ -40,6 +40,22 @@ namespace FleetManager
             ProfilePictureBox.Image = Image.FromFile(dataTable.Rows[0]["photo_url"].ToString());
             ProfilePictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
 
+            DataTable acc = SqlConn.GetTableProcedure("PROC_GET_ACC", token);
+            if ((int)acc.Rows[0][0] == -1)
+                ExitProgram();
+            else if ((int)acc.Rows[0][0] == 2)
+            {
+                ShowUsersListLabel.Enabled = ShowUsersListLabel.Visible = true;
+                ShowCompaniesList.Enabled = ShowCompaniesList.Visible = true;
+                AddDataButton.Enabled = AddDataButton.Visible = true;
+            }
+            else
+            {
+                ShowUsersListLabel.Enabled = ShowUsersListLabel.Visible = false;
+                ShowCompaniesList.Enabled = ShowCompaniesList.Visible = false;
+                AddDataButton.Enabled = AddDataButton.Visible = false;
+            }
+
             // pierwsza kontrolka pokazana po zalogowaniu -- docelowo MaiMenuControl
             // UserProfileControl userProfileControl = new UserProfileControl(token);
             // this.mainPanel.Controls.Add(userProfileControl);
@@ -131,6 +147,13 @@ namespace FleetManager
             this.MainPanel.Controls.Add(ctrl);
         }
 
+        public void ShowCompanyProfile(string name)
+        {
+            CompanyProfileControl ctrl = new CompanyProfileControl(token, name, this);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(ctrl);
+        }
+
         public void ShowCarProfile()
         {
             CarProfileControl ctrl = new CarProfileControl(token, this);
@@ -152,6 +175,27 @@ namespace FleetManager
             this.MainPanel.Controls.Add(ctrl);
         }
 
+        private void ShowUsersListLabel_Click(object sender, EventArgs e)
+        {
+            UsersListControl ctrl = new UsersListControl(token, this);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(ctrl);
+        }
+
+        private void ShowCompaniesList_Click(object sender, EventArgs e)
+        {
+            CompaniesListControl ctrl = new CompaniesListControl(token, this);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(ctrl);
+        }
+
+        private void ShowRepairHistoryLabel_Click(object sender, EventArgs e)
+        {
+            RepairHistoryListControl ctrl = new RepairHistoryListControl(token, this);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(ctrl);
+        }
+
         #endregion
 
 
@@ -161,5 +205,10 @@ namespace FleetManager
             this.Close();
         }
 
+        private void AddDataButton_Click(object sender, EventArgs e)
+        {
+            AddDataMenu addDataMenu = new AddDataMenu(token, this);
+            addDataMenu.ShowDialog();
+        }        
     }
 }

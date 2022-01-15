@@ -48,16 +48,12 @@ namespace FleetManager.Controls
             DataTable acc = SqlConn.GetTableProcedure("PROC_GET_ACC", token);
             if ((int)acc.Rows[0][0] == -1)
                 mainMenu.ExitProgram();
-            else if ((int)acc.Rows[0][0] == 0)
-            {
-                EditionButton.Enabled = EditionButton.Visible = false;
-                SaveButton.Enabled = SaveButton.Visible = false;
-            }
+            else if ((int)acc.Rows[0][0] == 0)            
+                EditionButton.Enabled = EditionButton.Visible = false;               
             else
-            {
                 EditionButton.Enabled = EditionButton.Visible = true;
-                SaveButton.Enabled = SaveButton.Visible = false;
-            }
+
+            SaveButton.Enabled = SaveButton.Visible = false;
         }
 
         public CompanyProfileControl(byte[] token, string company, MainMenu mainMenu)
@@ -85,7 +81,12 @@ namespace FleetManager.Controls
                 this.MailLabel.Text = mail;
             }
 
-
+            DataTable acc = SqlConn.GetTableProcedure("PROC_GET_ACC", token);
+            if ((int)acc.Rows[0][0] == -1)
+                mainMenu.ExitProgram();            
+                                       
+            EditionButton.Enabled = EditionButton.Visible = true;                
+            SaveButton.Enabled = SaveButton.Visible = false;            
         }
 
         private void Reload()
@@ -128,12 +129,23 @@ namespace FleetManager.Controls
         private void HideControlsShowTextBoxes()
         {
             Label[] labelsToHide = { DescriptionLabel, AddressLabel, PhoneLabel, MailLabel };
-            TextBox textBox;
+            string[] labelTexts = { "Opis firmy:", "Adres firmy:", "Nr telefonu:", "Adres email:" };
 
             // Schowanie labeli z labelsToHide i wstawienie na ich miejsce textBoxów
+            int k = 0;
             foreach (Label lb in labelsToHide)
             {
-                textBox = new TextBox
+                Label label = new Label()
+                {
+                    Name = lb.Name + "EditLab",
+                    Location = new Point(lb.Location.X - 100, lb.Location.Y),
+                    Width = 100,
+                    Text = labelTexts[k++],
+                    Enabled = true,
+                    Visible = true
+                };
+
+                TextBox textBox = new TextBox
                 {
                     Name = lb.Name + "Edit",
                     Location = lb.Location,
@@ -141,7 +153,9 @@ namespace FleetManager.Controls
                     Enabled = true,
                     Visible = true
                 };
+
                 lb.Enabled = lb.Visible = false;
+                this.Controls.Add(label);
                 this.Controls.Add(textBox);
             }
 

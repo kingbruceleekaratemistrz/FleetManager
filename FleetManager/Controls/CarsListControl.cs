@@ -33,36 +33,40 @@ namespace FleetManager.Controls
             {
                 for (int i = 0; i < cars.Rows.Count; i++)
                 {
-                    Panel panel = new Panel();
-                    panel.Width = flowLayoutPanel1.Width;
-                    panel.Height = 100;
-                    panel.Tag = (int)cars.Rows[i]["car_id"];
-                    panel.Click += new EventHandler(panel_Click);
+                    Panel panel = new Panel()
+                    {
+                        Width = flowLayoutPanel1.Width - 25,
+                        Height = 60,
+                        BackColor = SystemColors.ControlLight                    
+                    };
 
-                    Label carName = new Label();
-                    carName.Text = cars.Rows[i]["brand"].ToString() + ' ' + cars.Rows[i]["model"].ToString();
-                    carName.Font = new Font("Microsoft Sans Serif", 18);
-                    carName.Width = panel.Width;
+                    Label carName = new Label()
+                    {
+                        Width = panel.Width - 6,
+                        Height = 32,
+                        Location = new Point(3, 3),
+                        BackColor = SystemColors.GradientActiveCaption,
+                        Font = new Font("Microsoft Sans Serif", 16),
+                        Text = cars.Rows[i]["brand"].ToString() + ' ' + cars.Rows[i]["model"].ToString()
+                    };
 
-                    Label carInfo = new Label();
-                    carInfo.Text = cars.Rows[i]["prod_year"].ToString() + " rok, "
+                    Label carInfo = new Label()
+                    {
+                        Width = panel.Width - 6,
+                        Height = 23,
+                        Location = new Point(3, 35),
+                        BackColor = SystemColors.GradientActiveCaption,
+                        Font = new Font("Microsoft Sans Serif", 12),
+                        Text = cars.Rows[i]["prod_year"].ToString() + " rok, "
                         + cars.Rows[i]["hp"].ToString() + " KM, "
-                        + cars.Rows[i]["cc"].ToString() + " cm\xB3";
-                    carInfo.Font = new Font("Microsoft Sans Serif", 12);
-                    carInfo.AutoSize = true;
-                    carInfo.Location = new Point(carName.Location.X, carName.Location.Y + 30);
+                        + cars.Rows[i]["cc"].ToString() + " cm\xB3"
+                    };
 
                     panel.Controls.Add(carName);
                     panel.Controls.Add(carInfo);
                     flowLayoutPanel1.Controls.Add(panel);
-                }
+                }                
             }
-        }
-
-        private void panel_Click(object sender, EventArgs e)
-        {
-            Panel tmpPanel = (Panel) sender;
-            MessageBox.Show("car id: " + tmpPanel.Tag);
         }
     }
 }

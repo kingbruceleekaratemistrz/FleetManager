@@ -87,6 +87,26 @@ GO
 
 
 
+/* Procedura usuwaj¹cja rekord z podanej tabeli */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_DELETE_USERS_CRED')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_DELETE_USERS_CRED AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_DELETE_USERS_CRED (@token varbinary(64), @username nvarchar(30))
+AS
+	DELETE FROM USERS_CRED WHERE username = @username
+GO
+
+
+
 /* Procedura zwracaj¹ca poziom dostêpu u¿ytkownika,
 ** do którego przypisany jest @token, przes³any jako
 ** parametr. Zwraca:
@@ -263,6 +283,36 @@ AS
 GO
 
 
+/* Procedura zwracaj¹ca listê firm. */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_COMPANIES_LIST')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_COMPANIES_LIST AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_GET_COMPANIES_LIST (@token varbinary(64))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(200)
+
+	SET @sql = N'USE fleet_db '
+				+ N'SELECT name '
+				+ N'FROM COMP_PROFILES '
+	EXEC sp_sqlexec @sql
+GO
+
+
 
 /* Procedura zwracaj¹ca informacje o profilu firmy. 
 ** @token s³u¿y do weryfikacji sesji, jeœli podany @token
@@ -303,6 +353,80 @@ AS
 				+ N'SELECT * FROM COMP_PROFILES WHERE [name] = ''' + @input_name + ''''
 	EXEC sp_sqlexec @sql
 RETURN
+GO
+
+
+
+/* Procedura zwracaj¹ca listê u¿ytkowników z firmy,
+** do której nale¿y u¿ytkownik, którego @token zosta³
+** przekazany jako parametr. */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_COWORKERS_LIST')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_COWORKERS_LIST AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_GET_COWORKERS_LIST (@token varbinary(64))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @comp_name nvarchar(60)
+	SELECT @comp_name = u.company FROM USERS_PROFILES u
+	JOIN CONF_SESSIONS s ON u.username = s.username
+	WHERE s.sessionID = @token
+
+	DECLARE @sql nvarchar(200)
+
+	SET @sql = N'USE fleet_db '
+				+ N'SELECT first_name, last_name, position, username '
+				+ N'FROM USERS_PROFILES WHERE company = ''' + @comp_name + ''''
+	EXEC sp_sqlexec @sql
+GO
+
+
+
+/* Procedura zwracaj¹ca listê napraw u¿ytkownika zwi¹zanego z podanum tokenem */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_GET_REPAIR_HISTORY_LIST')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_GET_REPAIR_HISTORY_LIST AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_GET_REPAIR_HISTORY_LIST (@token varbinary(64))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(1000)
+
+	SET @sql = N'USE fleet_db '
+			+ N' SELECT s.[description], c.[name], r.[date], s.cost, s.[time] FROM REPAIR_HISTORY r'
+			+ N' JOIN [SERVICES] s ON r.service_id = s.service_id'
+			+ N' JOIN CAR_SERVICES c ON r.car_service_id = c.car_service_id'
+			+ N' JOIN USERS_PROFILES u ON r.plate_number = u.car_plate'
+			+ N' JOIN CONF_SESSIONS cs ON u.username = cs.username'
+			+ N' WHERE cs.sessionID = CONVERT(varbinary(64),''' + CONVERT(nvarchar(128), @token, 2) + ''', 2)'
+			+ N' ORDER BY r.[date]'			
+	EXEC sp_sqlexec @sql
 GO
 
 
@@ -421,9 +545,7 @@ GO
 
 
 
-/* Procedura zwracaj¹ca listê u¿ytkowników z firmy,
-** do której nale¿y u¿ytkownik, którego @token zosta³
-** przekazany jako parametr. */
+/* Procedura zwracaj¹ca listê u¿ytkowników. */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -444,17 +566,161 @@ AS
 		RETURN
 	END
 
-	DECLARE @comp_name nvarchar(60)
-	SELECT @comp_name = u.company FROM USERS_PROFILES u
-	JOIN CONF_SESSIONS s ON u.username = s.username
-	WHERE s.sessionID = @token
-
 	DECLARE @sql nvarchar(200)
 
 	SET @sql = N'USE fleet_db '
-				+ N'SELECT first_name, last_name, position, username '
-				+ N'FROM USERS_PROFILES WHERE company = ''' + @comp_name + ''''
+				+ N'SELECT first_name, last_name, company, username '
+				+ N'FROM USERS_PROFILES '
 	EXEC sp_sqlexec @sql
+GO
+
+
+/* Procedura dodaj¹ca rekord do CARS */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_INSERT_CARS')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_INSERT_CARS AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_INSERT_CARS (@token varbinary(64), @brand nvarchar(50), @model nvarchar(50), @prod_year nvarchar(4), @hp int, @cc int, @photo_url nvarchar(100))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(400)
+
+	SET @sql = N'USE fleet_db'
+			+ N' INSERT INTO CARS (brand, model, prod_year, hp, cc, photo_url)'
+			+ N' VALUES (''' + @brand + ''''
+			+ N', ''' + @model + ''''
+			+ N', ''' + @prod_year + ''''
+			+ N', ''' + STR(@hp) + ''''
+			+ N', ''' + STR(@cc) + ''''
+			+ N', ''' + @photo_url + ''')'
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
+
+
+
+/* Procedura dodaj¹ca rekord do CAR_SERVICES */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_INSERT_CAR_SERVICES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_INSERT_CAR_SERVICES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_INSERT_CAR_SERVICES (@token varbinary(64), @name nvarchar(50), @address nvarchar(100), @phone nvarchar(9), @mail nvarchar(100))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(500)
+
+	SET @sql = N'USE fleet_db'
+			+ N' INSERT INTO CAR_SERVICES ([name], [address], phone, mail)'
+			+ N' VALUES (''' + @name + ''''
+			+ N', ''' + @address + ''''
+			+ N', ''' + @phone + ''''
+			+ N', ''' + @mail + ''')'
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
+
+
+
+/* Procedura dodaj¹ca rekord do COMP_PROFILES */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_INSERT_COMP_PROFILES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_INSERT_COMP_PROFILES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_INSERT_COMP_PROFILES (@token varbinary(64), @name nvarchar(60), @description nvarchar(300), @address nvarchar(100), @phone nvarchar(9), @mail nvarchar(100))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(800)
+
+	SET @sql = N'USE fleet_db'
+			+ N' INSERT INTO COMP_PROFILES ([name], description, [address], phone, mail)'
+			+ N' VALUES (''' + @name + ''''
+			+ N', ''' + @description + ''''
+			+ N', ''' + @address + ''''
+			+ N', ''' + @phone + ''''
+			+ N', ''' + @mail + ''')'
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
+
+
+
+/* Procedura dodaj¹ca rekord do SERVICES */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_INSERT_SERVICES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_INSERT_SERVICES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_INSERT_SERVICES (@token varbinary(64), @cost int, @time nvarchar(10), @description nvarchar(300))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(700)
+
+	SET @sql = N'USE fleet_db'
+			+ N' INSERT INTO SERVICES (cost, [time], description)'
+			+ N' VALUES (''' + STR(@cost) + ''''
+			+ N', ''' + @time + ''''
+			+ N', ''' + @description + ''')'
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
 GO
 
 
@@ -493,6 +759,143 @@ AS
 			+ N', ''' + STR(@service_id) + ''''
 			+ N', ''' + STR(@car_service_id) + ''''
 			+ N', ''' + @date + ''')'
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
+
+
+
+/* Proceura wstawiaj¹ca rekord do tabeli USERS_CRED */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_INSERT_USERS_CRED')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_INSERT_USERS_CRED AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_INSERT_USERS_CRED (@token varbinary(64), @username nvarchar(30), @password nvarchar(30), @acc int)
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(200)
+	SET @sql = N'USE fleet_db'
+			+ N' INSERT INTO USERS_CRED (username, passwd, acc)'
+			+ N' VALUES (''' + @username + ''''
+			+ N', ''' + @password + ''''
+			+ N', ''' + STR(@acc) + ''')'
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
+
+
+/* Proceura wstawiaj¹ca rekord do tabeli USERS_PROFILES */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_INSERT_USERS_PROFILES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_INSERT_USERS_PROFILES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_INSERT_USERS_PROFILES (@token varbinary(64), @username nvarchar(30), @first_name nvarchar(30), @last_name nvarchar(50), @company nvarchar(60), @position nvarchar(50), @photo_url nvarchar(100), @phone nvarchar(9), @mail nvarchar(100), @car_id int, @car_plate nvarchar(7))
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	DECLARE @sql nvarchar(500)
+	SET @sql = N'USE fleet_db'
+			+ N' INSERT INTO USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_id, car_plate)'
+			+ N' VALUES (''' + @username + ''''
+			+ N', ''' + @first_name + ''''
+			+ N', ''' + @last_name + ''''
+			+ N', ''' + @company + ''''
+			+ N', ''' + @position + ''''
+			+ N', ''' + @photo_url + ''''
+			+ N', ''' + @phone + ''''
+			+ N', ''' + @mail + ''''
+			+ N', ''' + STR(@car_id) + ''''
+			+ N', ''' + @car_plate + ''')'
+			
+	EXEC sp_sqlexec @sql
+	SELECT 0
+RETURN
+GO
+
+
+
+/* Procedura aktualizuj¹ca rekord w tabeli CAR_SERVICES
+** Jeœli @input_comp jest pominiêty, zostanie przypisany companu powi¹zany z @token.
+** address = @new_address
+** phone = @new_phone
+** mail = @new_mail
+** Ulegn¹ zmianie tylko te wartoœci, dla których bêdzie przekazany odpowiedni parametr przy wywo³aniu procedury. */
+USE fleet_db
+GO
+IF NOT EXISTS (SELECT 1
+				FROM sysobjects o (NOLOCK)
+				WHERE	(o.[name] = N'PROC_UPDATE_CAR_SERVICES')
+				AND		(OBJECTPROPERTY(o.[ID], N'IsProcedure') = 1))
+BEGIN
+	DECLARE @stmt nvarchar(100)
+	SET @stmt = 'CREATE PROCEDURE dbo.PROC_UPDATE_CAR_SERVICES AS '
+	EXEC sp_sqlexec @stmt
+END
+GO
+ALTER PROCEDURE dbo.PROC_UPDATE_CAR_SERVICES (@token varbinary(64), @new_address nvarchar(100) = NULL, @new_phone nvarchar(9) = NULL, @new_mail nvarchar(100) = NULL, @input_car_service nvarchar(50) = NULL)
+AS
+	IF NOT EXISTS (SELECT 1 FROM CONF_SESSIONS WHERE sessionID=@token)
+	BEGIN
+		SELECT -1
+		RETURN
+	END
+
+	IF @new_address IS NULL
+	BEGIN
+		SELECT @new_address = [address] FROM CAR_SERVICES
+		WHERE name = @input_car_service
+	END
+
+	IF @new_phone IS NULL
+	BEGIN
+		SELECT @new_phone = phone FROM CAR_SERVICES
+		WHERE name = @input_car_service
+	END
+
+	IF @new_mail IS NULL
+	BEGIN
+		SELECT @new_mail = mail FROM CAR_SERVICES
+		WHERE name = @input_car_service
+	END
+
+
+	DECLARE @sql nvarchar(700)
+
+	SET @sql = N'USE fleet_db'
+			+ N' UPDATE CAR_SERVICES'
+			+ N' SET [address] = ''' + @new_address + ''','
+			+ N' phone = ''' + @new_phone + ''','
+			+ N' mail = ''' + @new_mail + ''''
+			+ N' WHERE name = ''' + @input_car_service + ''''
 			
 	EXEC sp_sqlexec @sql
 	SELECT 0
