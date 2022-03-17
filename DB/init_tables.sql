@@ -7,23 +7,6 @@ BEGIN
 	CREATE DATABASE fleet_db
 END
 GO
-/* Usuwanie tabel */
-/*	
-USE fleet_db
-GO
-DROP TABLE REPAIR_HISTORY
-DROP TABLE CAR_SERVICES
-DROP TABLE [SERVICES]
-DROP TABLE CONF_SESSIONS
-DROP TABLE USERS_PROFILES
-DROP TABLE CARS
-DROP TABLE COMP_PROFILES
-DROP TABLE USERS_CRED
-*/
-
-
-
-
 /* Tabela przechowuj¹ca dane uwierzytelniaj¹ce 
 username                       passwd						  acc
 ------------------------------ ------------------------------ ------
@@ -42,9 +25,6 @@ BEGIN
 	)
 END
 GO
-
-
-
 /* Tabela przechowywuj¹ca informacje o profilach firm
 name       description      address     phone     mail
 ---------- ---------------- ----------- --------- --------
@@ -64,9 +44,6 @@ BEGIN
 	,	mail			nvarchar(100)	NOT NULL
 )
 END
-
-
-
 /* Tabela przechowuj¹ca informacje o pojazdach
 car_id	brand	model	prod_year	hp		cc		  photo_url
 -------	------- ------- -----------	------- --------- -----------
@@ -88,12 +65,11 @@ BEGIN
 	,	photo_url		nvarchar(100)	NOT NULL
 )
 END
-
-
-
 /* Tabela przechowuj¹ce informacje o profilach u¿ytkowników 
-username      first_name     last_name     company      position   photo_url	  phone   mail	   car_id		plate_number
-------------- -------------- ------------- ------------ ---------- ------------- ------- -------- ------------  --------------
+username      first_name     last_name     company      position   photo_url	 
+------------- -------------- ------------- ------------ ---------- ------------- 
+phone   mail	 car_id		   plate_number
+------- -------- ------------  --------------
 */
 USE fleet_db
 GO
@@ -123,8 +99,7 @@ END
 
 /* Tabela przechowuj¹ca tokeny aktywnych sesji
 username                       sessionID
------------------------------- ---------------------
-*/
+------------------------------ --------------------- */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -138,13 +113,9 @@ BEGIN
 	,	sessionID	varbinary(64)	NOT NULL
 )
 END
-
-
-
 /* Tabela przechowuj¹ca
 service_id  cost      time  description
------------ --------- ----- ------------
-*/
+----------- --------- ----- ----------- */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -159,13 +130,9 @@ BEGIN
 	,	[description]	nvarchar(300)	NOT NULL
 )
 END
-
-
-
 /* Tabela przechowuj¹ca
 car_service_id  address   phone		mail
---------------- --------- --------- ------------
-*/
+--------------- --------- --------- ------------ */
 USE fleet_db
 GO
 IF NOT EXISTS (SELECT 1
@@ -206,46 +173,6 @@ BEGIN
 	,	[date]			datetime		
 )
 END
-
-
-
-/*
-/* Wstawienie danych do USERS_CRED */
-INSERT INTO dbo.USERS_CRED (username, passwd) VALUES ('admin', 'admin')
-INSERT INTO dbo.USERS_CRED (username, passwd) VALUES ('user1', 'passwd123')
-INSERT INTO dbo.USERS_CRED (username, passwd) VALUES ('user2', 'Fall2021')
-
-/* Wstawianie danych do COMP_PROFILES */
-INSERT INTO dbo.COMP_PROFILES ([name], [description], [address], phone, mail) 
-	VALUES ('Macrosoft', 'Software development company', 'Redmond, WA 98052-6399 USA', '425882808', 'macrosoft@outlook.com')
-INSERT INTO dbo.COMP_PROFILES ([name], [description], [address], phone, mail) 
-	VALUES ('Netflix', 'Movies and TV series streaming at demand.', 'Los Gatos, CA 100 Winchester Cir USA', '800112439', 'netflix@mail.com')
-
-/* Wstawianie danych do CARS */
-INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
-	VALUES ('WA77354', 'Skoda', 'Fabia', '2017', '105', '1422')
-INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
-	VALUES ('WU12345', 'BMW', 'M3', '2015', '431', '2979')
-INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
-	VALUES ('EOP7441', 'Volkswagen', 'Passat', '2020', '190', '1984')
-INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
-	VALUES ('XA82824', 'Mercedes-Benz', 'klasa G AMG', '2017', '571', '5461')
-INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
-	VALUES ('WU11354', 'BMW-ALPINA', 'B7', '2021', '608', '4395')
-INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
-	VALUES ('XZ27441', 'Volkswagen', 'Arteon', '2020', '190', '1984')
-INSERT INTO dbo.CARS (plate_number, brand, model, prod_year, hp, cc)
-	VALUES ('XZZ7441', 'Volkswagen', 'Arteon', '2018', '240', '1968')
-
-
-/* Wstawienie danych do USERS_PROFILES */
-INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_plate)
-	VALUES ('admin', 'Admini', 'Strator', 'Macrosoft', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_1.png', '123321123', 'admin@gmail.com', 'XA82824' )
-INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_plate)
-	VALUES ('user1', 'Pan', 'Jan', 'Macrosoft', 'Janitor', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_2.png', '431352643', 'PanJan@gmail.com', 'EOP7441')
-INSERT INTO dbo.USERS_PROFILES (username, first_name, last_name, company, position, photo_url, phone, mail, car_plate)
-	VALUES ('user2', 'Frodo', 'Baggins', 'Netflix', 'CEO', 'C:\Users\pduln\Documents\GitHub\FleetManager\Assets\Profile_pictures\profile_pic_3.png', '142511511', 'Shire@gmail.com', 'WU11354')
-*/
 
 /* 
 INSERT INTO dbo.USERS_CRED (username, passwd, acc) VALUES ('dulnikip', '123', 2)
